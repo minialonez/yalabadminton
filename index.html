@@ -1,18 +1,177 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🏸 YALA BADMINTON — Club Management System</title>
-  <meta name="description" content="ระบบจัดการสนามแบดมินตัน Yala Badminton Club">
-  <meta name="theme-color" content="#060e18">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏸</text></svg>">
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>YALA BADMINTON</title>
+<meta name="theme-color" content="#060e18">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏸</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Prompt',sans-serif;background:linear-gradient(160deg,#060e18,#0d1b2a 40%,#1b2838);color:#e8edf2;min-height:100vh;overflow-x:hidden}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes scan{0%{top:10%}50%{top:85%}100%{top:10%}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.notif-box{position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;max-width:360px;pointer-events:none}
+.notif{pointer-events:auto;padding:14px 18px;border-radius:14px;font-size:13px;font-weight:500;box-shadow:0 10px 40px rgba(0,0,0,.35);cursor:pointer;animation:slideIn .35s cubic-bezier(.22,1,.36,1);line-height:1.5;color:#fff}
+.n-info{background:#1e3a5f}.n-ok{background:#0ead82}.n-warn{background:#ff6b35}.n-err{background:#e63946}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;transition:opacity .8s}
+.login-wrap.out{opacity:0;pointer-events:none}
+.login-box{width:100%;max-width:420px;padding:48px 32px;text-align:center;animation:fadeUp .7s}
+.licon{font-size:64px;margin-bottom:8px;animation:float 3s ease-in-out infinite}
+.ltitle{font-size:28px;font-weight:900;letter-spacing:2px;margin-bottom:4px;background:linear-gradient(90deg,#0ead82,#ff6b35);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.lsub{color:#5a6a7a;font-size:13px;letter-spacing:1px;margin-bottom:36px}
+.flbl{display:block;font-size:11px;color:#6a7a8a;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;text-align:left}
+.fin{width:100%;padding:14px 18px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:#e8edf2;font-size:14px;font-family:'Prompt',sans-serif;outline:none}
+.fin:focus{border-color:#0ead82}
+.fin::placeholder{color:#3a4a5a}
+.ferr{color:#e63946;font-size:13px;font-weight:500;min-height:20px;margin:8px 0}
+.btn{width:100%;padding:14px;border-radius:14px;border:none;font-weight:700;font-size:15px;cursor:pointer;font-family:'Prompt',sans-serif;transition:transform .15s}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-g{background:linear-gradient(135deg,#0ead82,#0d9070);color:#fff;box-shadow:0 4px 20px rgba(14,173,130,.3)}
+.btn-o{background:#ff6b35;color:#fff}
+.btn-r{background:linear-gradient(135deg,#e63946,#c1121f);color:#fff}
+.btn-gr{background:linear-gradient(135deg,#0ead82,#ff6b35);color:#fff;box-shadow:0 4px 24px rgba(14,173,130,.3)}
+.btn-gh{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#8899aa;font-weight:600;font-size:13px}
+.hdr{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.05);background:rgba(0,0,0,.25);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100}
+.hdr-b{display:flex;align-items:center;gap:12px}
+.hdr-t{font-weight:900;font-size:17px;letter-spacing:1px;background:linear-gradient(90deg,#0ead82,#ff6b35);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hdr-s{font-size:9px;color:#4a5a6a;letter-spacing:2px;text-transform:uppercase}
+.odot{width:8px;height:8px;border-radius:50%;background:#0ead82;box-shadow:0 0 10px #0ead82;display:inline-block}
+.nav{display:flex;gap:2px;padding:8px 12px;background:rgba(0,0,0,.15);border-bottom:1px solid rgba(255,255,255,.04);overflow-x:auto}
+.nav button{flex:1;min-width:54px;padding:10px 4px;border-radius:12px;border:none;background:transparent;color:#5a6a7a;font-weight:600;font-size:10px;cursor:pointer;font-family:'Prompt',sans-serif;text-align:center}
+.nav button.on{background:rgba(14,173,130,.12);color:#0ead82}
+.nav button div{font-size:18px;margin-bottom:2px}
+.main{padding:20px 16px;max-width:640px;margin:0 auto}
+.sec{animation:fadeUp .4s ease}
+.stats{display:flex;gap:10px;margin-bottom:24px}
+.scard{flex:1;padding:18px 14px;border-radius:18px;text-align:center}
+.snum{font-size:32px;font-weight:900;font-family:'Orbitron',monospace}
+.slbl{font-size:11px;color:#6a7a8a;margin-top:4px;font-weight:500}
+.pc{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:16px;border:2px solid rgba(255,255,255,.04);background:rgba(255,255,255,.02);transition:all .25s;margin-bottom:8px}
+.pc.ck{cursor:pointer}.pc.sel{background:rgba(14,173,130,.12);border-color:#0ead82}.pc.pl{background:rgba(255,107,53,.06)}
+.av{width:50px;height:50px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.av-a{background:linear-gradient(135deg,#0ead82,#1e3a5f)}.av-p{background:linear-gradient(135deg,#ff6b35,#e63946);box-shadow:0 0 16px rgba(255,107,53,.35)}
+.pnm{font-weight:700;font-size:15px;color:#e8edf2}.pfn{font-size:12px;color:#7a8a9a;margin-top:1px}
+.sbdg{font-size:10px;font-weight:700;padding:5px 12px;border-radius:20px;letter-spacing:.8px}
+.sb-a{background:rgba(14,173,130,.15);color:#0ead82}.sb-p{background:rgba(255,107,53,.15);color:#ff6b35}
+.bdg{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;background:rgba(255,255,255,.06);color:#d0d8e0;border:1px solid rgba(255,255,255,.06);margin:0 3px 6px 0}
+.bdg-pk{background:rgba(255,107,53,.1);color:#ff6b35;border-color:rgba(255,107,53,.15);cursor:pointer}
+.bdg-em{color:#3a4a5a;border:1px dashed rgba(255,255,255,.1);background:none}
+.cc{padding:22px;border-radius:20px;margin-bottom:16px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}
+.cc.emp{background:rgba(14,173,130,.04);border-color:rgba(14,173,130,.1)}
+.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.cn{font-weight:800;font-size:18px}
+.cs{font-size:10px;font-weight:700;padding:5px 14px;border-radius:20px;letter-spacing:1px}
+.tlbl{font-size:11px;color:#8899aa;text-align:center;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:4px}
+.tval{font-size:56px;font-weight:900;font-family:'Orbitron',monospace;letter-spacing:2px;text-align:center}
+.tg{color:#0ead82}.to{color:#ff6b35}.tr{color:#e63946;text-shadow:0 0 30px rgba(230,57,70,.5);animation:pulse .8s infinite}
+.scr{display:flex;gap:10px;align-items:center;margin-top:16px}
+.sci{flex:1;text-align:center;font-size:24px;font-weight:800;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#e8edf2;font-family:'Prompt',sans-serif;outline:none}
+.sci:focus{border-color:#0ead82}
+.scd{font-weight:900;color:#3a4a5a;font-size:24px;padding-top:16px}
+.scl{font-size:10px;color:#5a6a7a;font-weight:600;margin-bottom:4px}
+.dsg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;background:rgba(255,255,255,.03);border-radius:16px;padding:18px}
+.dsb{padding:14px 18px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);margin-bottom:16px}
+.pt{padding:16px 18px;border-radius:16px;margin-bottom:20px;background:rgba(14,173,130,.06);border:1px solid rgba(14,173,130,.12)}
+.qc{padding:18px;border-radius:16px;margin-bottom:10px;background:rgba(123,104,238,.06);border:1px solid rgba(123,104,238,.1)}
+.hc{padding:18px;border-radius:16px;margin-bottom:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05)}
+.hg{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;font-size:12px}
+.hcl{text-align:center}.hcll{color:#5a6a7a;font-size:9px;font-weight:600}
+.amf{padding:24px;border-radius:18px;margin-bottom:24px;background:rgba(14,173,130,.05);border:1px solid rgba(14,173,130,.1);animation:fadeUp .3s}
+.avg{display:flex;flex-wrap:wrap;gap:8px}
+.avo{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;background:rgba(255,255,255,.03);border:2px solid transparent}
+.avo.on{background:rgba(14,173,130,.2);border-color:#0ead82}
+.mr{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:16px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);margin-bottom:8px}
+.mr.off{opacity:.5}
+.emp-s{text-align:center;padding:48px 20px;color:#3a4a5a}
+.emp-i{font-size:48px;margin-bottom:12px;opacity:.3}
+.slb{font-size:12px;color:#5a6a7a;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fw{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.tc{text-align:center}
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt24{margin-top:24px}.mb16{margin-bottom:16px}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+.scan-w{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;min-height:80vh;animation:fadeUp .5s}
+.scan-c{width:200px;height:200px;border-radius:50%;border:3px solid #0ead82;display:flex;align-items:center;justify-content:center;position:relative;background:rgba(255,255,255,.02);transition:all .5s;overflow:hidden}
+.scan-c.on{background:rgba(14,173,130,.08)}
+.scan-l{position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#0ead82,transparent);box-shadow:0 0 20px #0ead82;animation:scan 2s ease-in-out infinite}
+@media(max-width:480px){.ltitle{font-size:22px}.tval{font-size:44px}.snum{font-size:26px}.main{padding:16px 12px}}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+</style>
 </head>
 <body>
-  <div id="app"></div>
-  <script src="js/app.js"></script>
+<div id="app"></div>
+<script>
+const COURTS=[{id:1,name:"Court A"},{id:2,name:"Court B"},{id:3,name:"Court C"}];
+const DEF_M=[
+{id:"YB-001",firstName:"สมชาย",lastName:"ใจดี",nickname:"ชาย",avatar:"🧑",ms:"active"},
+{id:"YB-002",firstName:"สุดา",lastName:"แสงจันทร์",nickname:"ดา",avatar:"👩",ms:"active"},
+{id:"YB-003",firstName:"วิทยา",lastName:"เก่งกล้า",nickname:"วิท",avatar:"👨",ms:"active"},
+{id:"YB-004",firstName:"นภา",lastName:"สดใส",nickname:"นภ",avatar:"👧",ms:"active"},
+{id:"YB-005",firstName:"ธนา",lastName:"รุ่งเรือง",nickname:"ธน",avatar:"🧔",ms:"active"},
+{id:"YB-006",firstName:"มานี",lastName:"ดีงาม",nickname:"นี",avatar:"👩‍🦱",ms:"active"},
+{id:"YB-007",firstName:"ปิติ",lastName:"สุขสันต์",nickname:"ปิ",avatar:"👦",ms:"active"},
+{id:"YB-008",firstName:"รัตนา",lastName:"วงศ์ดี",nickname:"แนท",avatar:"👱‍♀️",ms:"active"}
+];
+const WU=300,RM=300;
+const AVS=["🧑","👩","👨","👧","🧔","👩‍🦱","👦","👱‍♀️","🧑‍🦰","👩‍🦳","🧑‍🦱","👨‍🦰","👴","👵","🧒","👲"];
+const S={auth:"login",adm:false,myId:null,ci:false,mems:[],hist:[],ps:{},
+courts:COURTS.map(c=>({...c,m:null})),q:[],view:"dashboard",pp:[],sam:false,
+nm:{fn:"",ln:"",nn:"",av:"🧑",ms:"active"}};
+function fm(s){const m=Math.floor(Math.abs(s)/60),sc=Math.abs(s)%60;return m+":"+String(sc).padStart(2,"0")}
+function ds(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")}
+function $(s){return document.querySelector(s)}
+function ld(){try{const m=localStorage.getItem("ym"),h=localStorage.getItem("yh");S.mems=m?JSON.parse(m):DEF_M.map(x=>({...x}));S.hist=h?JSON.parse(h):[];}catch(e){S.mems=DEF_M.map(x=>({...x}));S.hist=[];}}
+function sv(){localStorage.setItem("ym",JSON.stringify(S.mems))}
+function sh(){localStorage.setItem("yh",JSON.stringify(S.hist))}
+let nc=0;const ns=[];
+function notify(msg,t="info"){const id=++nc;ns.push({id,msg,t});rn();setTimeout(()=>{const i=ns.findIndex(n=>n.id===id);if(i>=0){ns.splice(i,1);rn();}},5000)}
+function dn(id){const i=ns.findIndex(n=>n.id===id);if(i>=0){ns.splice(i,1);rn();}}
+function rn(){const el=$("#nb");if(!el)return;el.innerHTML=ns.map(n=>`<div class="notif n-${n.t==='success'?'ok':n.t==='warn'?'warn':n.t==='error'?'err':'info'}" onclick="dn(${n.id})">${n.msg}</div>`).join("")}
+function R(){const a=$("#app");if(S.auth==="login"||S.auth==="fo"){a.innerHTML=rl();if(S.auth==="fo")setTimeout(()=>{const w=$(".login-wrap");if(w)w.classList.add("out")},10)}else{a.innerHTML=ra()}rn()}
+function rl(){return`<div class="login-wrap"><div class="login-box"><div class="licon">🏸</div><h1 class="ltitle">YALA BADMINTON</h1><p class="lsub">CLUB MANAGEMENT SYSTEM</p><div style="display:flex;flex-direction:column;gap:14px"><div><label class="flbl">Username / Member ID</label><input class="fin" id="lu" placeholder="เช่น 009 หรือ YB-001" onkeydown="if(event.key==='Enter')doLogin()"></div><div><label class="flbl">Password</label><input class="fin" id="lp" type="password" placeholder="รหัสผ่าน" onkeydown="if(event.key==='Enter')doLogin()"></div><div class="ferr" id="le"></div><button class="btn btn-g" onclick="doLogin()" style="font-size:16px;padding:16px">เข้าสู่ระบบ</button></div><div style="margin-top:32px;padding:16px;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);font-size:11px;color:#4a5a6a">Admin: 009 / bxkssnrz<br>สมาชิก: ใช้ Member ID เช่น YB-001</div></div></div>`}
+function doLogin(){const u=($("#lu")||{}).value||"",p=($("#lp")||{}).value||"";if(u.trim()==="009"&&p.trim()==="bxkssnrz"){S.adm=true;S.ci=true;S.auth="fo";R();setTimeout(()=>{S.auth="app";R()},800)}else{const f=S.mems.find(m=>m.id===u.trim()||m.nickname===u.trim());if(f){S.adm=false;S.myId=f.id;S.ps[f.id]="available";S.auth="fo";R();setTimeout(()=>{S.auth="app";R()},800)}else{const e=$("#le");if(e)e.textContent="ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"}}}
+function logout(){S.auth="login";S.adm=false;S.ci=false;S.myId=null;S.ps={};S.pp=[];R()}
+function ra(){const me=S.mems.find(m=>m.id===S.myId);const tabs=[{k:"dashboard",i:"📊",l:"Dashboard"},...(!S.adm?[{k:"party",i:"🎯",l:"Party"}]:[]),{k:"courts",i:"🏸",l:"Courts"},{k:"queue",i:"📋",l:"คิว"},{k:"history",i:"📜",l:"ประวัติ"},...(S.adm?[{k:"members",i:"👥",l:"สมาชิก"}]:[])];
+let c="";if(!S.adm&&!S.ci){c=rsc()}else{const vf={dashboard:rd,party:rp,courts:rco,queue:rq,history:rh,members:rm};c=`<nav class="nav">${tabs.map(t=>`<button class="${S.view===t.k?'on':''}" onclick="sv2('${t.k}')"><div>${t.i}</div>${t.l}</button>`).join("")}</nav><div class="main"><div class="sec">${(vf[S.view]||rd)()}</div></div>`}
+return`<div id="nb" class="notif-box"></div><header class="hdr"><div class="hdr-b"><span style="font-size:28px">🏸</span><div><div class="hdr-t">YALA BADMINTON</div><div class="hdr-s">${S.adm?"⚙️ ADMIN PANEL":"Club Management"}</div></div></div><div style="display:flex;align-items:center;gap:12px">${S.ci&&me?`<div style="display:flex;align-items:center;gap:6px"><span class="odot"></span><span style="font-size:12px;color:#8899aa">${me.nickname}</span></div>`:""}<button class="btn btn-gh" onclick="logout()" style="width:auto;padding:6px 14px;font-size:11px">ออก</button></div></header>${c}`}
+function sv2(v){S.view=v;R();rn()}
+function rsc(){return`<div class="scan-w"><div class="scan-c" id="sc"><span style="font-size:72px">🙂</span></div><h2 style="margin-top:28px;font-weight:800;font-size:22px">เช็คอินด้วยใบหน้า</h2><p style="color:#6a7a8a;font-size:13px;margin-top:8px;text-align:center;line-height:1.7">สแกนใบหน้าเพื่อเข้าใช้งานระบบ<br>ต้องอยู่ภายในรัศมีสนาม</p><button class="btn btn-g mt24" id="sb" onclick="doScan()" style="width:auto;padding:14px 52px">🔍 สแกนใบหน้า</button></div>`}
+function doScan(){const c=$("#sc"),b=$("#sb");if(!c||!b)return;c.classList.add("on");c.innerHTML='<div class="scan-l"></div><span style="font-size:72px;position:relative;z-index:1">📷</span>';b.disabled=true;b.textContent="กำลังสแกน...";setTimeout(()=>{S.ci=true;if(!S.myId){const me=S.mems[0];S.myId=me.id;S.ps[me.id]="available";notify("✅ "+me.nickname+" เช็คอินสำเร็จ!","success")}R();rn()},2500)}
+function pc(m,ck,sf){const ip=(S.ps[m.id]||"available")==="playing",sl=S.pp.includes(m.id);return`<div class="pc${ck&&!ip?" ck":""}${sl?" sel":""}${ip?" pl":""}" ${ck&&!ip?`onclick="tp('${m.id}')"`:""}><div class="av ${ip?"av-p":"av-a"}">${m.avatar}</div><div style="flex:1;min-width:0"><div class="pnm">${m.nickname}</div>${sf?`<div class="pfn">${m.firstName} ${m.lastName}</div>`:""}</div><div class="sbdg ${ip?"sb-p":"sb-a"}">${ip?"กำลังเล่น":"ว่าง"}</div></div>`}
+function rd(){const av=S.mems.filter(m=>m.ms==="active"&&(S.ps[m.id]||"available")==="available").length;const pl=Object.values(S.ps).filter(s=>s==="playing").length;const fc=S.courts.filter(c=>!c.m).length;const ac=S.mems.filter(m=>m.ms==="active");return`<div class="stats"><div class="scard" style="background:rgba(14,173,130,.08);border:1px solid rgba(14,173,130,.12)"><div class="snum" style="color:#0ead82">${av}</div><div class="slbl">ว่าง</div></div><div class="scard" style="background:rgba(255,107,53,.08);border:1px solid rgba(255,107,53,.12)"><div class="snum" style="color:#ff6b35">${pl}</div><div class="slbl">กำลังเล่น</div></div><div class="scard" style="background:rgba(123,104,238,.08);border:1px solid rgba(123,104,238,.12)"><div class="snum" style="color:#7b68ee">${fc}</div><div class="slbl">คอร์ดว่าง</div></div></div><div class="slb">ผู้เล่นทั้งหมด (${ac.length})</div>${ac.map(m=>pc(m,false,true)).join("")}`}
+function rp(){if(S.adm)return"";const me=S.mems.find(m=>m.id===S.myId);const av=S.mems.filter(m=>m.ms==="active"&&(S.ps[m.id]||"available")==="available"&&m.id!==S.myId);const pp=S.pp,emp=3-pp.length;return`<h3 style="font-size:18px;font-weight:800;margin-bottom:6px">🎯 สร้าง Party</h3><p style="font-size:13px;color:#6a7a8a;margin-bottom:20px;line-height:1.6">เลือกผู้เล่นที่ว่าง 3 คน รวมตัวคุณเป็น 4 คน</p><div class="pt"><div style="font-size:11px;color:#0ead82;font-weight:700;margin-bottom:10px;letter-spacing:1px">ทีมของคุณ (${1+pp.length}/4)</div><div class="fw" style="margin-bottom:0">${me?`<span class="bdg">${me.avatar} ${me.nickname} (คุณ)</span>`:""}${pp.map(id=>{const p=S.mems.find(x=>x.id===id);return`<span class="bdg bdg-pk" onclick="tp('${id}')">${p?p.avatar:""} ${p?p.nickname:""} ✕</span>`}).join("")}${Array.from({length:emp}).map(()=>'<span class="bdg bdg-em">+ เลือก</span>').join("")}</div></div><div class="slb">ผู้เล่นที่ว่าง (${av.length})</div>${av.length===0?'<div class="emp-s" style="padding:36px;font-size:14px">ไม่มีผู้เล่นที่ว่าง</div>':av.map(m=>pc(m,true)).join("")}<button class="btn ${pp.length===3?"btn-gr":""} mt24" ${pp.length!==3?'disabled style="background:#1e2a3a;color:#4a5a6a;box-shadow:none"':""} onclick="mkParty()">${pp.length===3?"🏸 สร้าง Party & จัดคิว!":"เลือกอีก "+(3-pp.length)+" คน"}</button>`}
+function tp(id){const i=S.pp.indexOf(id);if(i>=0)S.pp.splice(i,1);else if(S.pp.length<3)S.pp.push(id);R();rn()}
+function mkParty(){if(S.pp.length!==3)return;const all=[S.myId,...S.pp],pls=all.map(id=>S.mems.find(m=>m.id===id));all.forEach(id=>{S.ps[id]="playing"});const fc=S.courts.find(c=>!c.m);if(fc){fc.m={players:pls,phase:"warmup",timer:WU,scores:{},times:{}};notify("🏸 Party → "+fc.name+"! Warmup 5 นาที","success")}else{S.q.push({players:pls});notify("📋 Party เข้าคิว ลำดับที่ "+S.q.length,"info")}S.pp=[];S.view="courts";R();rn()}
+function rco(){return S.courts.map(c=>rcc(c)).join("")}
+function rcc(c){if(!c.m)return`<div class="cc emp"><div class="ch"><div class="cn">${c.name}</div><div class="cs" style="background:rgba(14,173,130,.12);color:#0ead82">ว่าง</div></div><div class="emp-s" style="padding:28px"><div class="emp-i">🏸</div>คอร์ดว่าง</div></div>`;
+const m=c.m,bds=m.players.map(p=>`<span class="bdg">${p.avatar} ${p.nickname}</span>`).join("");let pl,pc2,pb;
+switch(m.phase){case"warmup":pl="⏱ WARMUP";pc2="#ffc107";pb="rgba(255,193,7,.12)";break;case"rest":pl="😮‍💨 พัก";pc2="#7b68ee";pb="rgba(123,104,238,.12)";break;case"done":pl="✅ จบ";pc2="#0ead82";pb="rgba(14,173,130,.12)";break;default:pl="🏸 "+m.phase.toUpperCase();pc2="#ff6b35";pb="rgba(255,107,53,.12)"}
+let bd="";
+if(m.phase==="warmup"){const tc=m.timer<60?"tr":m.timer<120?"to":"tg";bd=`<div class="tc"><div class="tlbl">⏱ Warmup</div><div class="tval ${tc}">${fm(m.timer)}</div><p style="font-size:12px;color:#6a7a8a;margin:8px 0 16px;line-height:1.6">ต้องกด "เริ่มเกม" ก่อนหมดเวลา<br>ไม่งั้นหลุดจากคิว!</p><button class="btn btn-g" style="font-size:16px;padding:16px" onclick="sg(${c.id})">▶ เริ่มเกม!</button></div>`}
+else if(m.phase==="set1"){bd=`<div><div class="tlbl">🏸 Set 1</div><div class="tval tg">${fm(m.timer)}</div><div class="scr"><div style="flex:1"><div class="scl">ทีม A</div><input class="sci" id="sa${c.id}" type="number" placeholder="0"></div><div class="scd">:</div><div style="flex:1"><div class="scl">ทีม B</div><input class="sci" id="sb${c.id}" type="number" placeholder="0"></div></div><button class="btn btn-o mt12" onclick="ss(${c.id},1)">📝 บันทึก Set 1 → พัก</button></div>`}
+else if(m.phase==="rest"){const tc=m.timer<60?"tr":m.timer<120?"to":"tg";bd=`<div class="tc"><div class="tlbl">😮‍💨 พัก (สูงสุด 5 นาที)</div><div class="tval ${tc}">${fm(m.timer)}</div><div style="margin:12px 0;padding:10px 18px;border-radius:12px;display:inline-block;background:rgba(255,255,255,.04);font-size:14px;font-weight:600">Set 1: <span style="color:#0ead82">${m.scores.s1}</span> | ${fm(m.times.t1||0)}</div><button class="btn btn-g mt12" style="font-size:16px" onclick="s2s(${c.id})">▶ เริ่ม Set 2</button></div>`}
+else if(m.phase==="set2"){bd=`<div><div class="tlbl">🏸 Set 2</div><div class="tval tg">${fm(m.timer)}</div><div class="tc" style="font-size:13px;color:#5a6a7a;margin-top:4px">Set 1: <span style="color:#0ead82;font-weight:700">${m.scores.s1}</span> (${fm(m.times.t1||0)}) | พัก: ${fm(m.times.ru||0)}</div><div class="scr"><div style="flex:1"><div class="scl">ทีม A</div><input class="sci" id="sa${c.id}" type="number" placeholder="0"></div><div class="scd">:</div><div style="flex:1"><div class="scl">ทีม B</div><input class="sci" id="sb${c.id}" type="number" placeholder="0"></div></div><button class="btn btn-r mt12" onclick="ss(${c.id},2)">🏆 บันทึก Set 2 → จบเกม</button></div>`}
+else if(m.phase==="done"){const tot=(m.times.t1||0)+(m.times.t2||0)+(m.times.ru||0);bd=`<div class="tc"><div style="font-size:48px;margin-bottom:4px">🏆</div><div class="dsg"><div><div style="font-size:10px;color:#5a6a7a;font-weight:600;margin-bottom:4px">SET 1</div><div style="font-weight:900;font-size:26px;color:#0ead82;font-family:'Orbitron',monospace">${m.scores.s1}</div><div style="font-size:12px;color:#6a7a8a;margin-top:4px">⏱ ${fm(m.times.t1||0)}</div></div><div><div style="font-size:10px;color:#5a6a7a;font-weight:600;margin-bottom:4px">SET 2</div><div style="font-weight:900;font-size:26px;color:#ff6b35;font-family:'Orbitron',monospace">${m.scores.s2}</div><div style="font-size:12px;color:#6a7a8a;margin-top:4px">⏱ ${fm(m.times.t2||0)}</div></div></div><div class="dsb"><div style="display:flex;justify-content:space-between;font-size:13px;color:#6a7a8a;margin-bottom:6px"><span>เวลาพัก</span><span style="color:#7b68ee;font-weight:700">${fm(m.times.ru||0)}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800"><span>เวลารวม</span><span style="color:#0ead82;font-family:'Orbitron',monospace;font-size:18px">${fm(tot)}</span></div></div><button class="btn btn-gh" onclick="cc(${c.id})" style="width:auto;padding:12px 36px">เคลียร์คอร์ด</button></div>`}
+return`<div class="cc"><div class="ch"><div class="cn">${c.name}</div><div class="cs" style="background:${pb};color:${pc2}">${pl}</div></div><div class="fw">${bds}</div>${bd}</div>`}
+function sg(cid){const c=S.courts.find(x=>x.id===cid);if(c&&c.m&&c.m.phase==="warmup"){c.m.phase="set1";c.m.timer=0;notify("🏸 เริ่มเกม Set 1!","success");R();rn()}}
+function ss(cid,set){const a=parseInt(($(`#sa${cid}`)||{}).value)||0,b=parseInt(($(`#sb${cid}`)||{}).value)||0;const c=S.courts.find(x=>x.id===cid);if(!c||!c.m)return;
+if(set===1){c.m.times.t1=c.m.timer;c.m.scores.s1=a+"-"+b;c.m.phase="rest";c.m.timer=RM;notify("📝 Set 1: "+a+"-"+b+" | พักไม่เกิน 5 นาที","info")}else{c.m.times.t2=c.m.timer;const ru=c.m.times.ru||0;c.m.scores.s2=a+"-"+b;c.m.times.tot=(c.m.times.t1||0)+(c.m.times.t2||0)+ru;c.m.phase="done";c.m.players.forEach(p=>{S.ps[p.id]="available"});S.hist.unshift({id:Date.now(),date:ds(),court:c.name,players:c.m.players.map(p=>({id:p.id,nn:p.nickname})),scores:{s1:c.m.scores.s1,s2:a+"-"+b},times:{t1:fm(c.m.times.t1||0),t2:fm(c.m.times.t2||0),r:fm(ru),tot:fm(c.m.times.tot)}});sh();notify("🏆 จบเกม "+c.name+"!","success")}R();rn()}
+function s2s(cid){const c=S.courts.find(x=>x.id===cid);if(!c||!c.m)return;c.m.times.ru=RM-c.m.timer;c.m.phase="set2";c.m.timer=0;notify("▶ เริ่ม Set 2!","success");R();rn()}
+function cc(cid){const c=S.courts.find(x=>x.id===cid);if(c)c.m=null;R();rn()}
+function rq(){if(S.q.length===0)return`<h3 style="font-size:18px;font-weight:800;margin-bottom:16px">📋 คิวรอเล่น (0)</h3><div class="emp-s"><div class="emp-i">📋</div>ไม่มีคิวรอ</div>`;return`<h3 style="font-size:18px;font-weight:800;margin-bottom:16px">📋 คิวรอเล่น (${S.q.length})</h3>`+S.q.map((q,i)=>`<div class="qc"><div style="font-weight:800;font-size:15px;color:#7b68ee;margin-bottom:10px">ลำดับที่ ${i+1}</div><div class="fw" style="margin-bottom:0">${q.players.map(p=>`<span class="bdg">${p.avatar} ${p.nickname}</span>`).join("")}</div></div>`).join("")}
+function rh(){if(S.hist.length===0)return`<h3 style="font-size:18px;font-weight:800;margin-bottom:16px">📜 ประวัติ (0)</h3><div class="emp-s"><div class="emp-i">📜</div>ยังไม่มีประวัติ</div>`;return`<h3 style="font-size:18px;font-weight:800;margin-bottom:16px">📜 ประวัติ (${S.hist.length})</h3>`+S.hist.map(h=>`<div class="hc"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><span style="font-weight:700;font-size:14px;color:#0ead82">${h.court}</span><span style="font-size:11px;color:#5a6a7a">${h.date}</span></div><div class="fw" style="margin-bottom:12px">${h.players.map(p=>`<span style="padding:3px 10px;border-radius:16px;font-size:11px;background:rgba(255,255,255,.05);color:#b0b8c0">${p.nn}</span>`).join("")}</div><div class="hg"><div class="hcl"><div class="hcll">SET 1</div><div style="font-weight:800;color:#0ead82">${h.scores.s1}</div><div style="color:#5a6a7a;font-size:10px">${h.times.t1}</div></div><div class="hcl"><div class="hcll">SET 2</div><div style="font-weight:800;color:#ff6b35">${h.scores.s2}</div><div style="color:#5a6a7a;font-size:10px">${h.times.t2}</div></div><div class="hcl"><div class="hcll">พัก</div><div style="font-weight:700;color:#7b68ee">${h.times.r}</div></div><div class="hcl"><div class="hcll">รวม</div><div style="font-weight:800">${h.times.tot}</div></div></div></div>`).join("")}
+function rm(){if(!S.adm)return"";let f="";if(S.sam){const nm=S.nm,nid="YB-"+String(S.mems.length+1).padStart(3,"0");f=`<div class="amf"><div style="font-size:14px;font-weight:700;color:#0ead82;margin-bottom:16px">➕ เพิ่มสมาชิกใหม่</div><div style="margin-bottom:12px"><label class="flbl">ID (อัตโนมัติ)</label><div class="fin" style="background:rgba(255,255,255,.02);color:#5a6a7a">${nid}</div></div><div class="g2" style="margin-bottom:12px"><div><label class="flbl">ชื่อจริง *</label><input class="fin" id="nf" value="${nm.fn}" oninput="S.nm.fn=this.value" placeholder="ชื่อจริง"></div><div><label class="flbl">นามสกุล</label><input class="fin" id="nl" value="${nm.ln}" oninput="S.nm.ln=this.value" placeholder="นามสกุล"></div></div><div style="margin-bottom:12px"><label class="flbl">ชื่อเล่น *</label><input class="fin" id="nn" value="${nm.nn}" oninput="S.nm.nn=this.value" placeholder="ชื่อเล่น"></div><div style="margin-bottom:12px"><label class="flbl" style="margin-bottom:8px">อวาตาร์</label><div class="avg">${AVS.map(a=>`<div class="avo${nm.av===a?" on":""}" onclick="S.nm.av='${a}';R();rn()">${a}</div>`).join("")}</div></div><div style="margin-bottom:12px"><label class="flbl">สถานะ</label><div style="display:flex;gap:8px"><button class="btn" style="flex:1;padding:10px;font-size:13px;${nm.ms==="active"?"background:rgba(14,173,130,.15);color:#0ead82":"background:rgba(255,255,255,.03);color:#5a6a7a"}" onclick="S.nm.ms='active';R();rn()">✅ Active</button><button class="btn" style="flex:1;padding:10px;font-size:13px;${nm.ms==="inactive"?"background:rgba(230,57,70,.15);color:#e63946":"background:rgba(255,255,255,.03);color:#5a6a7a"}" onclick="S.nm.ms='inactive';R();rn()">⏸ Inactive</button></div></div><button class="btn btn-g mt8" onclick="addM()" ${!nm.fn||!nm.nn?"disabled":""}>✅ เพิ่มสมาชิก</button></div>`}
+return`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:8px;flex-wrap:wrap"><h3 style="font-size:18px;font-weight:800">👥 สมาชิก (${S.mems.length})</h3><div style="display:flex;gap:8px"><button class="btn btn-gh" style="width:auto;padding:10px 16px;font-size:12px;border:1px solid rgba(230,57,70,.2);background:rgba(230,57,70,.08);color:#e63946" onclick="resetD()">🗑 รีเซ็ต</button><button class="btn ${S.sam?"btn-r":"btn-g"}" style="width:auto;padding:10px 20px;font-size:13px" onclick="S.sam=!S.sam;R();rn()">${S.sam?"✕ ยกเลิก":"+ เพิ่มสมาชิก"}</button></div></div>${f}${S.mems.map((m,i)=>`<div class="mr${m.ms!=="active"?" off":""}"><div style="font-size:11px;color:#4a5a6a;font-weight:700;width:28px">${i+1}</div><div class="av av-a" style="width:44px;height:44px;font-size:22px">${m.avatar}</div><div style="flex:1"><div style="font-weight:700;font-size:14px">${m.nickname}</div><div style="font-size:11px;color:#6a7a8a">${m.firstName} ${m.lastName}</div></div><div style="text-align:right"><div style="font-size:10px;color:#5a6a7a;font-family:monospace">${m.id}</div><div style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;margin-top:4px;display:inline-block;background:${m.ms==="active"?"rgba(14,173,130,.12)":"rgba(230,57,70,.12)"};color:${m.ms==="active"?"#0ead82":"#e63946"}">${m.ms==="active"?"ACTIVE":"INACTIVE"}</div></div></div>`).join("")}`}
+function addM(){const nm=S.nm;if(!nm.fn||!nm.nn)return;const id="YB-"+String(S.mems.length+1).padStart(3,"0");S.mems.push({id,firstName:nm.fn,lastName:nm.ln,nickname:nm.nn,avatar:nm.av,ms:nm.ms});sv();S.nm={fn:"",ln:"",nn:"",av:"🧑",ms:"active"};S.sam=false;notify("✅ เพิ่มสมาชิก "+nm.nn+" ("+id+")","success");R();rn()}
+function resetD(){if(!confirm("ล้างข้อมูลทั้งหมด?"))return;localStorage.removeItem("ym");localStorage.removeItem("yh");S.mems=DEF_M.map(x=>({...x}));S.hist=[];notify("🗑 ล้างข้อมูลสำเร็จ","warn");R();rn()}
+setInterval(()=>{if(S.auth!=="app")return;let ch=false;S.courts.forEach(c=>{if(!c.m)return;const m=c.m;if(m.phase==="warmup"){m.timer--;if(m.timer<=0){notify("⚠️ "+c.name+": หมดเวลา Warmup! หลุดจากคิว","warn");m.players.forEach(p=>{S.ps[p.id]="available"});c.m=null}ch=true}else if(m.phase==="set1"||m.phase==="set2"){m.timer++;ch=true}else if(m.phase==="rest"){m.timer--;if(m.timer<=0){notify("⚠️ "+c.name+": หมดเวลาพัก!","warn");m.times.ru=RM;m.phase="set2";m.timer=0}ch=true}});const fc=S.courts.find(c=>!c.m);if(fc&&S.q.length>0){const nx=S.q.shift();fc.m={players:nx.players,phase:"warmup",timer:WU,scores:{},times:{}};notify("🏸 "+nx.players.map(p=>p.nickname).join(", ")+" → "+fc.name,"success");ch=true}if(ch){R();rn()}},1000);
+ld();R();
+</script>
 </body>
 </html>
