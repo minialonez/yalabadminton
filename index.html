@@ -238,11 +238,14 @@ async function doLoginAfterReg(doFace){
     if(r.ok){
       localStorage.setItem("yb_token",r.token);
       me=r.member;
-      await refreshState();
       pageMode="login";
-      if(doFace){scanPhase="facereg";regStep=-1;regPhotos=[];regRecording=false;regCountdown=0}
+      if(doFace){
+        // ไปลงทะเบียนใบหน้าทันที (ไม่ต้อง GPS)
+        scanPhase="facereg";regStep=-1;regPhotos=[];regRecording=false;regCountdown=0;
+      }
       R();
-      if(doFace)setTimeout(()=>startCam("#reg-vid"),400);
+      refreshState().then(()=>{});// background
+      if(doFace)setTimeout(()=>startCam("#reg-vid"),500);
       else notify("✅ เข้าสู่ระบบสำเร็จ!","success");
     }else{notify("❌ "+r.error,"error");pageMode="login";R()}
   }catch(e){notify("❌ เชื่อมต่อไม่ได้","error");pageMode="login";R()}
@@ -270,30 +273,55 @@ function logout(){stopCam();me=null;state=null;modal=null;scanPhase="idle";pageM
 
 // ════ CHECK-IN ════
 function renderCheckin(){const hasFace=!!me.facePhoto;
+
+// Face registration mode (ทำที่ไหนก็ได้ ไม่ต้อง GPS)
 if(scanPhase==="facereg")return wrapPage(renderFaceReg());
+
+// Check-in GPS flow
 if(scanPhase==="geo")return wrapPage(`<div class="tc" style="padding:40px"><div style="font-size:48px;margin-bottom:12px">📍</div><div style="color:#ffc107;font-size:13px;font-weight:500">⏳ กำลังตรวจสอบตำแหน่ง...</div></div>`);
 if(scanPhase==="geo_fail")return wrapPage(`<div class="tc" style="padding:40px"><div style="font-size:48px;margin-bottom:12px">❌</div><div class="loc-err">📍 อยู่นอกรัศมีสนาม ${geoDist>=0?"(ห่าง "+geoDist+"m)":"(ไม่สามารถระบุ)"}</div><p style="color:#6a7a8a;font-size:12px;margin:12px 0">ต้องอยู่ภายใน ${MRAD}m จากสนาม</p><button class="b bo mt8" onclick="scanPhase='idle';R()">🔄 ลองใหม่</button></div>`);
-if(scanPhase==="camera")return wrapPage(`<div class="tc" style="padding:20px"><div class="loc-ok">✅ อยู่ในรัศมี (${geoDist}m)</div><h3 style="font-weight:800;font-size:17px;margin-bottom:12px">📷 สแกนใบหน้า</h3><div class="cam-w"><video id="ci-cam" autoplay playsinline muted></video><div class="scanl"></div></div><p style="color:#6a7a8a;font-size:12px;margin:12px 0">หันหน้าตรงกล้อง</p><button class="b bg" onclick="doCICapture()">📸 ถ่ายภาพ & เช็คอิน</button></div>`);
+if(scanPhase==="camera")return wrapPage(`<div class="tc" style="padding:20px"><div class="loc-ok">✅ อยู่ในรัศมี (${geoDist}m)</div><h3 style="font-weight:800;font-size:17px;margin-bottom:12px">📷 สแกนใบหน้ายืนยัน</h3><div class="cam-w"><video id="ci-cam" autoplay playsinline muted></video><div class="scanl"></div></div><p style="color:#6a7a8a;font-size:12px;margin:12px 0">หันหน้าตรงกล้อง</p><button class="b bg" onclick="doCICapture()">📸 ถ่ายภาพ & เช็คอิน</button></div>`);
 if(scanPhase==="processing")return wrapPage(`<div class="tc" style="padding:40px"><div class="loader" style="width:40px;height:40px;border-width:4px"></div><p style="color:#ffc107;font-weight:600;margin-top:16px">กำลังเช็คอิน...</p></div>`);
-// Default idle
-return wrapPage(`<div class="tc" style="padding:28px;animation:fadeUp .5s">
-${hasFace?`<div style="width:90px;height:90px;border-radius:50%;margin:0 auto 14px;overflow:hidden;border:3px solid #0ead82"><img src="${me.facePhoto}" style="width:100%;height:100%;object-fit:cover"></div>`:`<div style="font-size:56px;margin-bottom:14px">${me.avatar}</div>`}
-<h2 style="font-weight:800;font-size:20px;margin-bottom:4px">สวัสดี ${me.nickname}!</h2>
-<p style="color:#6a7a8a;font-size:13px;line-height:1.7;margin-bottom:20px">เช็คอินเข้าสนามแบดมินตัน<br>เพื่อให้คนอื่นเห็นว่าคุณพร้อมเล่น</p>
-<div style="padding:14px;border-radius:14px;background:rgba(14,173,130,.06);border:1px solid rgba(14,173,130,.12);margin-bottom:16px;text-align:left">
-<div style="font-size:12px;font-weight:600;color:#0ead82;margin-bottom:4px">📍 ตรวจสอบตำแหน่ง (ภายใน ${MRAD}m)</div>
-${hasFace?`<div style="font-size:11px;color:#0ead82">📷 + สแกนใบหน้ายืนยันตัวตน</div>`:`<div style="font-size:11px;color:#ffc107">⚠️ ยังไม่ได้ลงทะเบียนใบหน้า (เช็คอินด้วย GPS อย่างเดียว)</div>`}
+
+// Default idle — show 2 clear sections
+return wrapPage(`<div style="padding:24px;animation:fadeUp .5s">
+${hasFace?`<div style="text-align:center"><div style="width:80px;height:80px;border-radius:50%;margin:0 auto 12px;overflow:hidden;border:3px solid #0ead82"><img src="${me.facePhoto}" style="width:100%;height:100%;object-fit:cover"></div></div>`:`<div style="text-align:center;font-size:48px;margin-bottom:12px">${me.avatar}</div>`}
+<h2 style="font-weight:800;font-size:20px;text-align:center;margin-bottom:16px">สวัสดี ${me.nickname}!</h2>
+
+<!-- SECTION 1: เช็คอินเข้าสนาม (ต้อง GPS) -->
+<div style="padding:16px;border-radius:16px;background:rgba(14,173,130,.06);border:1px solid rgba(14,173,130,.15);margin-bottom:14px">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+<span style="font-size:20px">📍</span>
+<div>
+<div style="font-size:14px;font-weight:700;color:#0ead82">เช็คอินเข้าสนาม</div>
+<div style="font-size:11px;color:#6a7a8a">ต้องอยู่ภายในรัศมี ${MRAD}m จากสนาม</div>
 </div>
-<button class="b bg" onclick="startCI()" style="font-size:15px;padding:14px">📍 เช็คอินเข้าสนาม</button>
-${!hasFace?`<button class="b bgh mt12" onclick="startFaceReg()" style="font-size:12px;padding:10px">📷 ลงทะเบียนใบหน้า (แนะนำ)</button>`:""}
+</div>
+${hasFace?`<div style="font-size:11px;color:#0ead82;margin-bottom:10px;padding:6px 10px;border-radius:8px;background:rgba(14,173,130,.08)">✅ มีข้อมูลใบหน้า — จะสแกนยืนยันตัวตน</div>`:`<div style="font-size:11px;color:#ffc107;margin-bottom:10px;padding:6px 10px;border-radius:8px;background:rgba(255,193,7,.08)">⚠️ ยังไม่มีข้อมูลใบหน้า — เช็คอินด้วย GPS อย่างเดียว</div>`}
+<button class="b bg" onclick="startCI()" style="font-size:15px;padding:13px">📍 เช็คอินเข้าสนาม</button>
+</div>
+
+<!-- SECTION 2: ลงทะเบียนใบหน้า (ทำที่ไหนก็ได้) -->
+<div style="padding:16px;border-radius:16px;background:rgba(123,104,238,.06);border:1px solid rgba(123,104,238,.15)">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+<span style="font-size:20px">📹</span>
+<div>
+<div style="font-size:14px;font-weight:700;color:#7b68ee">${hasFace?"ลงทะเบียนใบหน้าใหม่":"ลงทะเบียนใบหน้า"}</div>
+<div style="font-size:11px;color:#6a7a8a">ทำที่ไหนก็ได้ ไม่ต้องอยู่ในสนาม</div>
+</div>
+</div>
+${hasFace?`<div style="font-size:11px;color:#0ead82;margin-bottom:10px;padding:6px 10px;border-radius:8px;background:rgba(14,173,130,.08)">✅ ลงทะเบียนแล้ว — กดเพื่อทำใหม่</div>`:`<div style="font-size:11px;color:#ff6b35;margin-bottom:10px;padding:6px 10px;border-radius:8px;background:rgba(255,107,53,.08)">📷 แนะนำให้ลงทะเบียนเพื่อยืนยันตัวตนตอนเช็คอิน</div>`}
+<button class="b bp" onclick="startFaceReg()" style="font-size:14px;padding:12px">📹 ${hasFace?"ลงทะเบียนใบหน้าใหม่":"เริ่มลงทะเบียนใบหน้า"}</button>
+</div>
 </div>`)}
 
 function wrapPage(content){return`<div id="nb" class="nb"></div><header class="hd"><div style="display:flex;align-items:center;gap:10px"><span style="font-size:22px">🏸</span><div class="ht">YALA BADMINTON</div></div><button class="b bgh" onclick="logout()" style="width:auto;padding:5px 10px;font-size:10px">ออก</button></header>${content}`}
 
+// Check-in flow (ต้อง GPS)
 async function startCI(){scanPhase="geo";R();checkGeo(async ok=>{if(!ok){scanPhase="geo_fail";R();return}if(me.facePhoto){scanPhase="camera";R();setTimeout(()=>startCam("#ci-cam"),300)}else{scanPhase="processing";R();await doCheckin()}})}
 async function doCICapture(){const photo=capPhoto("#ci-cam");stopCam();if(!photo){notify("❌ ถ่ายภาพไม่สำเร็จ","error");scanPhase="idle";R();return}scanPhase="processing";R();await doCheckin()}
 async function doCheckin(){try{const r=await api('checkin',{id:me.id,lat:myLat,lng:myLng});
-if(r.ok){me.isOnline=true;notify("✅ "+me.nickname+" เช็คอินเข้าสนามสำเร็จ!","success");await refreshState()}else{notify("❌ "+r.error,"error")}scanPhase="idle";R()}catch(e){notify("❌ เชื่อมต่อ server ไม่ได้","error");scanPhase="idle";R()}}
+if(r.ok){me.isOnline=true;notify("✅ "+me.nickname+" เช็คอินเข้าสนามสำเร็จ!","success");smartRefresh()}else{notify("❌ "+r.error,"error")}scanPhase="idle";R()}catch(e){notify("❌ เชื่อมต่อ server ไม่ได้","error");scanPhase="idle";R()}}
 
 // ════ FACE REGISTRATION — Video Recording Style ════
 let regRecording=false,regCountdown=0,regTimer=null;
@@ -384,13 +412,13 @@ runPoseCountdown();
 },1200)}
 
 async function finishFaceReg(profilePhoto){
-scanPhase="idle";
 try{
 await apiPost({action:'registerFace',id:me.id,photo:profilePhoto});
 me.facePhoto=profilePhoto;
-notify("✅ ลงทะเบียนใบหน้าสำเร็จ!","success");
+notify("✅ ลงทะเบียนใบหน้าสำเร็จ! กลับไปหน้าเช็คอิน","success");
 }catch(e){notify("❌ บันทึกไม่สำเร็จ","error")}
-regStep=-1;regPhotos=[];regRecording=false;R()
+// กลับไปหน้าเช็คอิน (idle)
+scanPhase="idle";regStep=-1;regPhotos=[];regRecording=false;R()
 }
 
 function cancelReg(){if(regTimer){clearInterval(regTimer);regTimer=null}stopCam();scanPhase="idle";regStep=-1;regPhotos=[];regRecording=false;R()}
