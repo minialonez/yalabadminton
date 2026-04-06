@@ -155,7 +155,8 @@ async function startCam(sel){try{if(camStream&&camStream.active){setTimeout(()=>
 function capPhoto(sel){const v=document.querySelector(sel);if(!v||!v.videoWidth)return null;const c=document.createElement("canvas");c.width=300;c.height=300;const ctx=c.getContext("2d");const s=Math.min(v.videoWidth,v.videoHeight);const sx=(v.videoWidth-s)/2,sy=(v.videoHeight-s)/2;ctx.translate(300,0);ctx.scale(-1,1);ctx.drawImage(v,sx,sy,s,s,0,0,300,300);return c.toDataURL("image/jpeg",0.7)}
 
 // ─── Geo ───
-function checkGeo(cb){geoOk=null;geoDist=null;if(!navigator.geolocation){geoOk=false;cb(false);return}navigator.geolocation.getCurrentPosition(p=>{const d=haversine(p.coords.latitude,p.coords.longitude,CLAT,CLNG);geoDist=Math.round(d);geoOk=d<=MRAD;cb(geoOk)},()=>{geoOk=false;geoDist=-1;cb(false)},{enableHighAccuracy:true,timeout:10000})}
+let myLat=0,myLng=0;
+function checkGeo(cb){geoOk=null;geoDist=null;if(!navigator.geolocation){geoOk=false;cb(false);return}navigator.geolocation.getCurrentPosition(p=>{myLat=p.coords.latitude;myLng=p.coords.longitude;const d=haversine(myLat,myLng,CLAT,CLNG);geoDist=Math.round(d);geoOk=d<=MRAD;cb(geoOk)},()=>{geoOk=false;geoDist=-1;cb(false)},{enableHighAccuracy:true,timeout:10000})}
 function haversine(a1,o1,a2,o2){const R=6371e3,d1=(a2-a1)*Math.PI/180,d2=(o2-o1)*Math.PI/180;const a=Math.sin(d1/2)**2+Math.cos(a1*Math.PI/180)*Math.cos(a2*Math.PI/180)*Math.sin(d2/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
 
 // ─── Helpers ───
@@ -245,15 +246,15 @@ async function doLogin(){
   if(btn)btn.innerHTML='<span class="loader"></span>';
   try{
     const r=await api('login',{user:u.trim(),pass:p.trim()});
-    if(!r.ok){const e=document.querySelector("#le");if(e)e.textContent=r.error||"เข้าสู่ระบบไม่สำเร็จ";if(btn){btn.disabled=false;btn.textContent="เข้าสู่ระบบ"}return}    // Save token & remember
+    if(!r.ok){const e=document.querySelector("#le");if(e)e.textContent=r.error||"เข้าสู่ระบบไม่สำเร็จ";if(btn){btn.disabled=false;btn.textContent="เข้าสู่ระบบ"}return}
+    // Save token & remember
     localStorage.setItem("yb_token",r.token);
     const rem=document.querySelector("#lrem");
     if(rem&&rem.checked){localStorage.setItem("yb_remember","1");localStorage.setItem("yb_user",u.trim());localStorage.setItem("yb_pass",p.trim())}else{localStorage.removeItem("yb_remember");localStorage.removeItem("yb_user");localStorage.removeItem("yb_pass")}
     me=r.member;
-    // Fade out
+    // Fade out & render immediately (don't wait for state)
     const w=document.querySelector("#loginWrap");if(w)w.classList.add("out");
-    await refreshState();
-    setTimeout(()=>{R()},600);
+    setTimeout(()=>{R();refreshState().then(()=>R())},500);
   }catch(e){console.error('Login error:',e);const el=document.querySelector("#le");if(el)el.textContent="เชื่อมต่อ server ไม่ได้: "+e.message;if(btn){btn.disabled=false;btn.textContent="เข้าสู่ระบบ"}}
 }
 
@@ -283,7 +284,7 @@ function wrapPage(content){return`<div id="nb" class="nb"></div><header class="h
 
 async function startCI(){scanPhase="geo";R();checkGeo(async ok=>{if(!ok){scanPhase="geo_fail";R();return}if(me.facePhoto){scanPhase="camera";R();setTimeout(()=>startCam("#ci-cam"),300)}else{scanPhase="processing";R();await doCheckin()}})}
 async function doCICapture(){const photo=capPhoto("#ci-cam");stopCam();if(!photo){notify("❌ ถ่ายภาพไม่สำเร็จ","error");scanPhase="idle";R();return}scanPhase="processing";R();await doCheckin()}
-async function doCheckin(){try{const r=await api('checkin',{id:me.id,lat:CLAT,lng:CLNG});// Use real coords in production
+async function doCheckin(){try{const r=await api('checkin',{id:me.id,lat:myLat,lng:myLng});
 if(r.ok){me.isOnline=true;notify("✅ "+me.nickname+" เช็คอินเข้าสนามสำเร็จ!","success");await refreshState()}else{notify("❌ "+r.error,"error")}scanPhase="idle";R()}catch(e){notify("❌ เชื่อมต่อ server ไม่ได้","error");scanPhase="idle";R()}}
 
 // ════ FACE REGISTRATION ════
@@ -397,7 +398,12 @@ function renderModal(){if(modal==="edit"&&editMem){return`<div class="modal-bg" 
 async function doSaveEdit(){const data={action:'editMember',id:editMem.id,firstName:nm.fn,lastName:nm.ln,nickname:nm.nn,username:nm.un,avatar:nm.av,role:nm.role,memberStatus:nm.ms};if(nm.pw)data.password=nm.pw;try{const r=await apiPost(data);if(r.ok)notify("✅ แก้ไขแล้ว","success");else notify("❌ "+r.error,"error");modal=null;await refreshState();R()}catch(e){notify("❌","error")}}
 
 // ════ AUTO REFRESH ════
-setInterval(async()=>{if(me&&(me.isOnline||me.role==="admin")){await refreshState();R()}},5000); // Refresh every 5 seconds
+setInterval(async()=>{
+  if(!me)return;
+  if(scanPhase!=="idle")return; // Don't refresh during camera/GPS operations
+  if(!me.isOnline&&me.role!=="admin")return; // Don't refresh on check-in page
+  try{await refreshState();R()}catch(e){}
+},8000); // Refresh every 8 seconds (less aggressive)
 
 // ════ INIT ════
 (async()=>{
@@ -406,12 +412,14 @@ setInterval(async()=>{if(me&&(me.isOnline||me.role==="admin")){await refreshStat
     document.querySelector("#app").innerHTML='<div style="text-align:center;padding:40px"><div style="font-size:48px;margin-bottom:12px">⚠️</div><h2 style="font-weight:800;font-size:18px;color:#e63946;margin-bottom:8px">ยังไม่ได้ตั้งค่า API URL</h2><p style="color:#6a7a8a;font-size:13px;line-height:1.7">เปิดไฟล์ index.html แล้วแก้บรรทัด:<br><code style="background:rgba(255,255,255,.1);padding:4px 8px;border-radius:6px;font-size:12px">const API_URL = \'YOUR_APPS_SCRIPT_URL_HERE\';</code><br><br>เปลี่ยนเป็น URL ที่ได้จาก Apps Script Deploy</p></div>';
     return;
   }
-  // Try auto-login
-  const token=localStorage.getItem("yb_token");
+  // Try auto-login (fast path)
   const rem=localStorage.getItem("yb_remember")==="1";
   if(rem&&localStorage.getItem("yb_user")){
-    try{const r=await api('login',{user:localStorage.getItem("yb_user"),pass:localStorage.getItem("yb_pass")});
-    if(r.ok){localStorage.setItem("yb_token",r.token);me=r.member;await refreshState();R();return}}catch(e){}}
+    try{
+      const r=await api('login',{user:localStorage.getItem("yb_user"),pass:localStorage.getItem("yb_pass")});
+      if(r.ok){localStorage.setItem("yb_token",r.token);me=r.member;R();refreshState().then(()=>R());return}
+    }catch(e){console.error('Auto-login failed:',e)}
+  }
   R();
 })();
 </script>
