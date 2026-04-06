@@ -92,6 +92,14 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .reg-thumbs{display:flex;gap:6px;justify-content:center;margin:10px 0;flex-wrap:wrap}
 .reg-thumb{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #0ead82}
 .reg-thumb.emp2{border:2px dashed rgba(255,255,255,.1);background:rgba(255,255,255,.04)}
+@keyframes flashCap{0%{opacity:1}100%{opacity:0}}
+@keyframes countPop{0%{transform:scale(2);opacity:0}50%{transform:scale(1);opacity:1}100%{transform:scale(.8);opacity:0}}
+.rec-dot{width:12px;height:12px;border-radius:50%;background:#e63946;animation:pulse .8s infinite;display:inline-block}
+.cam-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;border-radius:inherit}
+.cam-flash.on{animation:flashCap .3s ease}
+.count-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:72px;font-weight:900;color:#fff;text-shadow:0 0 30px rgba(0,0,0,.7);font-family:'Orbitron',monospace;z-index:2}
+.count-overlay span{animation:countPop .8s ease}
+.pose-arrow{font-size:64px;animation:float 1.5s ease-in-out infinite}
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:center;justify-content:center}
 .modal{background:#0d1b2a;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:24px;width:92%;max-width:400px;max-height:90vh;overflow-y:auto}
 .modal h3{font-size:15px;font-weight:800;margin-bottom:14px}
@@ -232,7 +240,7 @@ async function doLoginAfterReg(doFace){
       me=r.member;
       await refreshState();
       pageMode="login";
-      if(doFace){scanPhase="facereg";regStep=0;regPhotos=[]}
+      if(doFace){scanPhase="facereg";regStep=-1;regPhotos=[];regRecording=false;regCountdown=0}
       R();
       if(doFace)setTimeout(()=>startCam("#reg-vid"),400);
       else notify("✅ เข้าสู่ระบบสำเร็จ!","success");
@@ -287,14 +295,105 @@ async function doCICapture(){const photo=capPhoto("#ci-cam");stopCam();if(!photo
 async function doCheckin(){try{const r=await api('checkin',{id:me.id,lat:myLat,lng:myLng});
 if(r.ok){me.isOnline=true;notify("✅ "+me.nickname+" เช็คอินเข้าสนามสำเร็จ!","success");await refreshState()}else{notify("❌ "+r.error,"error")}scanPhase="idle";R()}catch(e){notify("❌ เชื่อมต่อ server ไม่ได้","error");scanPhase="idle";R()}}
 
-// ════ FACE REGISTRATION ════
-function startFaceReg(){scanPhase="facereg";regStep=0;regPhotos=[];R();setTimeout(()=>startCam("#reg-vid"),300)}
-function renderFaceReg(){const pose=POSES[regStep];const steps=POSES.map((_,i)=>`<div class="reg-step ${i<regStep?'done':i===regStep?'cur':''}"></div>`).join("");
+// ════ FACE REGISTRATION — Video Recording Style ════
+let regRecording=false,regCountdown=0,regTimer=null;
+
+function startFaceReg(){scanPhase="facereg";regStep=-1;regPhotos=[];regRecording=false;regCountdown=0;R();setTimeout(()=>startCam("#reg-vid"),400)}
+
+function renderFaceReg(){
+const steps=POSES.map((_,i)=>`<div class="reg-step ${i<regStep?'done':i===regStep?'cur':''}"></div>`).join("");
 const thumbs=regPhotos.map(p=>`<img class="reg-thumb" src="${p}">`).join("")+Array.from({length:6-regPhotos.length}).map(()=>'<div class="reg-thumb emp2"></div>').join("");
-return`<div class="tc" style="padding:20px;animation:fadeUp .3s"><h2 style="font-weight:800;font-size:18px;margin-bottom:4px">📷 ลงทะเบียนใบหน้า</h2><p style="color:#6a7a8a;font-size:12px;margin-bottom:12px">ขั้นตอนที่ ${regStep+1} จาก 6</p><div class="reg-steps">${steps}</div><div class="cam-w sq"><video id="reg-vid" autoplay playsinline muted></video></div><div style="margin-top:14px"><div style="font-size:40px">${pose.i}</div><div style="font-size:16px;font-weight:800;color:#ff6b35;margin:6px 0">${pose.l}</div><div style="font-size:12px;color:#6a7a8a;margin-bottom:12px">${pose.s}</div></div><div class="reg-thumbs">${thumbs}</div><button class="b ${regStep===5?'bgr':'bg'}" onclick="capRegStep()">${regStep===5?"📸 ถ่ายรูปโปรไฟล์ & เสร็จ":"📸 ถ่ายภาพ → ขั้นตอนถัดไป"}</button><button class="b bgh mt8" onclick="stopCam();scanPhase='idle';regStep=0;regPhotos=[];R()" style="font-size:12px;padding:8px">ยกเลิก</button></div>`}
-async function capRegStep(){const photo=capPhoto("#reg-vid");if(!photo){notify("ถ่ายภาพไม่สำเร็จ","error");return}regPhotos.push(photo);
-if(regStep===5){stopCam();try{await apiPost({action:'registerFace',id:me.id,photo:photo});me.facePhoto=photo;notify("✅ ลงทะเบียนใบหน้าสำเร็จ!","success")}catch(e){notify("❌ บันทึกไม่สำเร็จ","error")}scanPhase="idle";regStep=0;regPhotos=[];R()
-}else{regStep++;R();setTimeout(()=>{const v=document.querySelector("#reg-vid");if(v&&camStream){v.srcObject=camStream;v.play()}},100)}}
+
+// Step -1: Ready to start recording
+if(regStep===-1){return`<div class="tc" style="padding:16px;animation:fadeUp .3s">
+<h2 style="font-weight:800;font-size:18px;margin-bottom:4px">📹 ลงทะเบียนใบหน้า</h2>
+<p style="color:#6a7a8a;font-size:12px;margin-bottom:14px">ระบบจะอัดวิดีโอ พร้อมบอกให้คุณทำท่าทาง 6 ท่า<br>ไม่ต้องกดอะไร แค่ทำตามที่บอก</p>
+<div class="cam-w sq" style="border-color:rgba(255,255,255,.15)"><video id="reg-vid" autoplay playsinline muted></video></div>
+<div style="margin-top:16px;padding:14px;border-radius:14px;background:rgba(255,255,255,.03);text-align:left">
+<div style="font-size:12px;font-weight:700;color:#ff6b35;margin-bottom:8px">📋 ท่าทาง 6 ท่า:</div>
+${POSES.map((p,i)=>`<div style="font-size:12px;color:#8899aa;margin:3px 0">${i+1}. ${p.i} ${p.l} — <span style="color:#6a7a8a">${p.s}</span></div>`).join("")}
+</div>
+<button class="b br mt12" onclick="startRecording()" style="font-size:16px;padding:14px">
+<span class="rec-dot" style="margin-right:8px"></span> เริ่มอัดวิดีโอ
+</button>
+<button class="b bgh mt8" onclick="cancelReg()" style="font-size:12px;padding:8px">ยกเลิก</button>
+</div>`}
+
+// Recording in progress
+const pose=POSES[regStep];
+return`<div class="tc" style="padding:16px">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px">
+<span class="rec-dot"></span>
+<span style="font-size:13px;font-weight:700;color:#e63946;letter-spacing:1px">REC</span>
+<span style="font-size:12px;color:#6a7a8a;margin-left:8px">ท่าที่ ${regStep+1}/6</span>
+</div>
+<div class="reg-steps">${steps}</div>
+<div class="cam-w sq" style="border-color:#e63946;position:relative">
+<video id="reg-vid" autoplay playsinline muted></video>
+<div class="cam-flash" id="reg-flash"></div>
+${regCountdown>0?`<div class="count-overlay"><span key="${regCountdown}">${regCountdown}</span></div>`:""}
+</div>
+<div style="margin-top:16px">
+<div class="pose-arrow">${pose.i}</div>
+<div style="font-size:20px;font-weight:900;color:#ff6b35;margin:8px 0">${pose.l}</div>
+<div style="font-size:14px;color:#8899aa">${pose.s}</div>
+${regCountdown>0?`<div style="font-size:14px;color:#ffc107;font-weight:700;margin-top:8px">📸 ถ่ายใน ${regCountdown} วินาที...</div>`:`<div style="font-size:13px;color:#0ead82;font-weight:600;margin-top:8px">✅ ถ่ายแล้ว!</div>`}
+</div>
+<div class="reg-thumbs">${thumbs}</div>
+</div>`}
+
+function startRecording(){regRecording=true;regStep=0;regCountdown=3;R();
+// Re-attach camera after render
+setTimeout(()=>{const v=document.querySelector("#reg-vid");if(v&&camStream){v.srcObject=camStream;v.play()}runPoseCountdown()},150)}
+
+function runPoseCountdown(){
+if(regTimer)clearInterval(regTimer);
+regCountdown=3;R();reattachCam();
+regTimer=setInterval(()=>{
+regCountdown--;
+if(regCountdown<=0){
+clearInterval(regTimer);regTimer=null;
+// Auto-capture!
+autoCaptureReg();
+}else{R();reattachCam()}
+},1000)}
+
+function reattachCam(){setTimeout(()=>{const v=document.querySelector("#reg-vid");if(v&&camStream&&!v.srcObject){v.srcObject=camStream;v.play()}},50)}
+
+function autoCaptureReg(){
+// Flash effect
+const flash=document.querySelector("#reg-flash");if(flash)flash.classList.add("on");
+// Capture photo
+const photo=capPhoto("#reg-vid");
+if(photo)regPhotos.push(photo);else regPhotos.push("");
+// Show captured state briefly then advance
+R();reattachCam();
+setTimeout(()=>{
+if(regStep>=5){// All done!
+stopCam();regRecording=false;
+if(regPhotos[5]){// Save profile photo (last one)
+finishFaceReg(regPhotos[5]);
+}else if(regPhotos.length>0){// Use any available photo
+const profilePhoto=regPhotos.find(p=>p)||regPhotos[0];
+finishFaceReg(profilePhoto);
+}
+}else{
+regStep++;
+runPoseCountdown();
+}
+},1200)}
+
+async function finishFaceReg(profilePhoto){
+scanPhase="idle";
+try{
+await apiPost({action:'registerFace',id:me.id,photo:profilePhoto});
+me.facePhoto=profilePhoto;
+notify("✅ ลงทะเบียนใบหน้าสำเร็จ!","success");
+}catch(e){notify("❌ บันทึกไม่สำเร็จ","error")}
+regStep=-1;regPhotos=[];regRecording=false;R()
+}
+
+function cancelReg(){if(regTimer){clearInterval(regTimer);regTimer=null}stopCam();scanPhase="idle";regStep=-1;regPhotos=[];regRecording=false;R()}
 
 // ════ MAIN APP ════
 function ra(){if(!state)return`<div class="tc" style="padding:40px"><div class="loader" style="width:40px;height:40px;border-width:4px"></div></div>`;
@@ -397,13 +496,17 @@ function openEdit(id){modal="edit";editMem=gm(id);nm={fn:editMem.firstName,ln:ed
 function renderModal(){if(modal==="edit"&&editMem){return`<div class="modal-bg" onclick="modal=null;R()"><div class="modal" onclick="event.stopPropagation()"><h3>✏️ แก้ไข ${editMem.nickname}</h3><div style="display:flex;flex-direction:column;gap:8px"><div class="g2"><div><label class="fl">ชื่อจริง</label><input class="fi" value="${nm.fn}" oninput="nm.fn=this.value"></div><div><label class="fl">นามสกุล</label><input class="fi" value="${nm.ln}" oninput="nm.ln=this.value"></div></div><div><label class="fl">ชื่อเล่น</label><input class="fi" value="${nm.nn}" oninput="nm.nn=this.value"></div><div class="g2"><div><label class="fl">Username</label><input class="fi" value="${nm.un}" oninput="nm.un=this.value"></div><div><label class="fl">Password ใหม่</label><input class="fi" value="${nm.pw}" oninput="nm.pw=this.value" placeholder="ไม่เปลี่ยนปล่อยว่าง"></div></div><div><label class="fl">สิทธิ์</label><div style="display:flex;gap:5px"><button class="b" style="flex:1;padding:7px;font-size:11px;${nm.role==='admin'?'background:rgba(255,193,7,.15);color:#ffc107':'background:rgba(255,255,255,.03);color:#5a6a7a'}" onclick="nm.role='admin';R()">👑</button><button class="b" style="flex:1;padding:7px;font-size:11px;${nm.role==='member'?'background:rgba(14,173,130,.15);color:#0ead82':'background:rgba(255,255,255,.03);color:#5a6a7a'}" onclick="nm.role='member';R()">🏸</button></div></div><button class="b bg" onclick="doSaveEdit()">💾 บันทึก</button><button class="b bgh mt8" onclick="modal=null;R()">ยกเลิก</button></div></div></div>`}return""}
 async function doSaveEdit(){const data={action:'editMember',id:editMem.id,firstName:nm.fn,lastName:nm.ln,nickname:nm.nn,username:nm.un,avatar:nm.av,role:nm.role,memberStatus:nm.ms};if(nm.pw)data.password=nm.pw;try{const r=await apiPost(data);if(r.ok)notify("✅ แก้ไขแล้ว","success");else notify("❌ "+r.error,"error");modal=null;await refreshState();R()}catch(e){notify("❌","error")}}
 
-// ════ AUTO REFRESH ════
-setInterval(async()=>{
-  if(!me)return;
-  if(scanPhase!=="idle")return; // Don't refresh during camera/GPS operations
-  if(!me.isOnline&&me.role!=="admin")return; // Don't refresh on check-in page
+// ════ SMART POLLING — refresh ทุก 30 วิ + หลังทำ action ════
+let lastRefresh=0;
+async function smartRefresh(){
+  if(!me||scanPhase!=="idle")return;
+  if(!me.isOnline&&me.role!=="admin")return;
+  const now2=Date.now();
+  if(now2-lastRefresh<3000)return; // ป้องกัน refresh ซ้ำภายใน 3 วิ
+  lastRefresh=now2;
   try{await refreshState();R()}catch(e){}
-},8000); // Refresh every 8 seconds (less aggressive)
+}
+setInterval(smartRefresh,30000);
 
 // ════ INIT ════
 (async()=>{
