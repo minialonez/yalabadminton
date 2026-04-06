@@ -201,10 +201,8 @@ return`<div style="text-align:center;padding:24px;animation:fadeUp .4s">
 </div>
 <div class="reg-thumbs">${thumbs}</div>
 <button class="b ${step===5?'bgr':'bg'}" onclick="capRegStep()" style="font-size:14px;padding:12px">${step===5?"📸 ถ่ายรูปโปรไฟล์ & เสร็จสิ้น":"📸 ถ่ายภาพ → ขั้นตอนถัดไป"}</button>
-<button class="b bgh mt8" onclick="S.regStep=0;S.regPhotos=[];stopCam();R()" style="font-size:12px;padding:10px">ยกเลิก</button>
+<button class="b bgh mt8" onclick="S.regStep=0;S.regPhotos=[];S.scanPhase='idle';stopCam();R()" style="font-size:12px;padding:10px">ยกเลิก</button>
 </div>`}
-
-function startFaceReg(){S.regStep=0;S.regPhotos=[];R();setTimeout(()=>startCam("#reg-vid"),300)}
 
 function capRegStep(){const photo=capPhoto("#reg-vid");if(!photo){notify("ถ่ายภาพไม่สำเร็จ","error");return}
 S.regPhotos.push(photo);
@@ -213,32 +211,53 @@ stopCam();const me=gm(S.myId);me.face=photo;me.poses=S.regPhotos.slice(0,5);sv()
 notify("✅ ลงทะเบียนใบหน้าสำเร็จ!","success");S.scanPhase="idle";S.regStep=0;S.regPhotos=[];R();rn()}else{S.regStep++;R();rn()}}
 
 /* ═══ CHECK-IN FLOW ═══ */
-function renderCheckin(){const me=gm(S.myId);
-// No face registered → go to registration
-if(!me.face){if(S.regStep>0||S.regPhotos.length>0)return renderFaceReg();
-return`<div style="text-align:center;padding:40px;animation:fadeUp .5s">
-<div style="font-size:56px;margin-bottom:12px">📷</div>
-<h2 style="font-weight:800;font-size:20px;margin-bottom:8px">ลงทะเบียนใบหน้า</h2>
-<p style="color:#6a7a8a;font-size:13px;line-height:1.7;margin-bottom:20px">คุณยังไม่ได้ลงทะเบียนใบหน้า<br>กรุณาลงทะเบียนก่อนเช็คอิน</p>
-<p style="color:#5a6a7a;font-size:12px;margin-bottom:20px">ระบบจะถ่ายภาพ 6 ท่า: หน้าตรง, หันซ้าย, หันขวา,<br>เงยหน้า, ก้มหน้า, และรูปโปรไฟล์</p>
-<button class="b bgr" onclick="startFaceReg()">📷 เริ่มลงทะเบียนใบหน้า</button></div>`}
+function renderCheckin(){const me=gm(S.myId);const hasFace=!!me.face;
 
-// Has face → check-in flow
-if(S.scanPhase==="idle")return`<div style="text-align:center;padding:40px;animation:fadeUp .5s">
-<div style="width:100px;height:100px;border-radius:50%;margin:0 auto 16px;overflow:hidden;border:3px solid #0ead82"><img src="${me.face}" style="width:100%;height:100%;object-fit:cover"></div>
-<h2 style="font-weight:800;font-size:20px;margin-bottom:8px">สวัสดี ${me.nn}!</h2>
-<p style="color:#6a7a8a;font-size:13px;line-height:1.7;margin-bottom:20px">เช็คอินด้วยใบหน้าเพื่อเข้าใช้งาน<br>ต้องอยู่ภายในรัศมี ${MRAD}m จากสนาม</p>
-<button class="b bg" onclick="startCI()">📍 ตรวจสอบตำแหน่ง & เช็คอิน</button></div>`;
+// IDLE - main check-in screen
+if(S.scanPhase==="idle")return`<div style="text-align:center;padding:32px;animation:fadeUp .5s">
+${hasFace?`<div style="width:100px;height:100px;border-radius:50%;margin:0 auto 16px;overflow:hidden;border:3px solid #0ead82"><img src="${me.face}" style="width:100%;height:100%;object-fit:cover"></div>`:`<div style="font-size:64px;margin-bottom:16px">${me.av}</div>`}
+<h2 style="font-weight:800;font-size:22px;margin-bottom:4px">สวัสดี ${me.nn}!</h2>
+<p style="color:#6a7a8a;font-size:13px;line-height:1.7;margin-bottom:24px">เช็คอินเข้าสนามแบดมินตัน<br>เพื่อให้คนอื่นเห็นว่าคุณพร้อมเล่น</p>
+<div style="padding:16px;border-radius:16px;background:rgba(14,173,130,.06);border:1px solid rgba(14,173,130,.12);margin-bottom:20px">
+<div style="font-size:13px;font-weight:600;color:#0ead82;margin-bottom:6px">📍 ตรวจสอบตำแหน่ง</div>
+<div style="font-size:11px;color:#6a7a8a">ต้องอยู่ภายในรัศมี ${MRAD}m จากสนาม</div>
+${hasFace?`<div style="font-size:11px;color:#0ead82;margin-top:4px">📷 + สแกนใบหน้ายืนยันตัวตน</div>`:`<div style="font-size:11px;color:#ffc107;margin-top:4px">⚠️ ยังไม่ได้ลงทะเบียนใบหน้า (เช็คอินด้วยตำแหน่งอย่างเดียว)</div>`}
+</div>
+<button class="b bg" onclick="startCI()" style="font-size:16px;padding:16px">📍 เช็คอินเข้าสนาม</button>
+${!hasFace?`<button class="b bgh mt12" onclick="startFaceReg()" style="font-size:13px;padding:12px">📷 ลงทะเบียนใบหน้า (แนะนำ)</button>`:""}</div>`;
+
+// Face registration flow
+if(S.scanPhase==="facereg")return renderFaceReg();
+
+// Geo checking
 if(S.scanPhase==="geo")return`<div style="text-align:center;padding:40px;animation:fadeUp .3s"><div style="font-size:48px;margin-bottom:12px">📍</div><div class="loc-wait">⏳ กำลังตรวจสอบตำแหน่ง...</div></div>`;
-if(S.scanPhase==="geo_fail")return`<div style="text-align:center;padding:40px;animation:fadeUp .3s"><div style="font-size:48px;margin-bottom:12px">❌</div><div class="loc-err">📍 นอกรัศมีสนาม ${S.geoDist>=0?"("+S.geoDist+"m)":"(ไม่สามารถระบุ)"}</div><p style="color:#6a7a8a;font-size:12px;margin:12px 0">ต้องอยู่ภายใน ${MRAD}m</p><button class="b bo mt8" onclick="S.scanPhase='idle';R()">ลองใหม่</button></div>`;
-if(S.scanPhase==="camera")return`<div style="text-align:center;padding:24px;animation:fadeUp .3s"><div class="loc-ok">✅ อยู่ในรัศมี (${S.geoDist}m)</div><h3 style="font-weight:800;font-size:18px;margin-bottom:14px">📷 สแกนใบหน้า</h3><div class="cam-wrap"><video id="ci-cam" autoplay playsinline muted></video><div class="scan-line2"></div></div><p style="color:#6a7a8a;font-size:12px;margin:14px 0">หันหน้าตรงกล้อง</p><button class="b bg" onclick="doCI()">📸 ถ่ายภาพ & เช็คอิน</button></div>`;
-if(S.scanPhase==="matching")return`<div style="text-align:center;padding:40px"><div style="font-size:48px;margin-bottom:12px">🔄</div><p style="color:#ffc107;font-weight:600">กำลังจับคู่ใบหน้า...</p></div>`;
+
+// Geo failed
+if(S.scanPhase==="geo_fail")return`<div style="text-align:center;padding:40px;animation:fadeUp .3s"><div style="font-size:48px;margin-bottom:12px">❌</div><div class="loc-err">📍 คุณอยู่นอกรัศมีสนาม ${S.geoDist>=0?"(ห่าง "+S.geoDist+"m)":"(ไม่สามารถระบุตำแหน่ง)"}</div><p style="color:#6a7a8a;font-size:12px;margin:12px 0">ต้องอยู่ภายในรัศมี ${MRAD}m จากสนาม</p><button class="b bo mt8" onclick="S.scanPhase='idle';R()">🔄 ลองใหม่</button></div>`;
+
+// Camera scan (only if has face)
+if(S.scanPhase==="camera")return`<div style="text-align:center;padding:24px;animation:fadeUp .3s"><div class="loc-ok">✅ อยู่ในรัศมีสนาม (${S.geoDist}m)</div><h3 style="font-weight:800;font-size:18px;margin-bottom:14px">📷 สแกนใบหน้ายืนยัน</h3><div class="cam-wrap"><video id="ci-cam" autoplay playsinline muted></video><div class="scan-line2"></div></div><p style="color:#6a7a8a;font-size:12px;margin:14px 0">หันหน้าตรงกล้อง</p><button class="b bg" onclick="doCI()">📸 ถ่ายภาพ & เช็คอิน</button></div>`;
+
+// Matching face
+if(S.scanPhase==="matching")return`<div style="text-align:center;padding:40px"><div style="font-size:48px;margin-bottom:12px">🔄</div><p style="color:#ffc107;font-weight:600">กำลังเช็คอิน...</p></div>`;
+
 return""}
 
-function startCI(){S.scanPhase="geo";R();checkGeo(ok=>{if(ok){S.scanPhase="camera";R();setTimeout(()=>startCam("#ci-cam"),300)}else{S.scanPhase="geo_fail";R()}})}
+function startFaceReg(){S.scanPhase="facereg";S.regStep=0;S.regPhotos=[];R();setTimeout(()=>startCam("#reg-vid"),300)}
+
+function startCI(){S.scanPhase="geo";R();checkGeo(ok=>{if(!ok){S.scanPhase="geo_fail";R();return}
+const me=gm(S.myId);
+if(me.face){// Has face → do face scan
+S.scanPhase="camera";R();setTimeout(()=>startCam("#ci-cam"),300)
+}else{// No face → check-in with geo only
+S.scanPhase="matching";R();
+setTimeout(()=>{completeCheckin()},1500)}})}
+
 function doCI(){const photo=capPhoto("#ci-cam");stopCam();if(!photo){notify("❌ ถ่ายภาพไม่สำเร็จ","error");S.scanPhase="idle";R();return}
 S.scanPhase="matching";R();
-setTimeout(()=>{S.ci=true;S.online[S.myId]=true;S.ps[S.myId]="available";notify("✅ "+gm(S.myId).nn+" เช็คอินสำเร็จ!","success");S.scanPhase="idle";R();rn()},1500)}
+setTimeout(()=>{completeCheckin()},1500)}
+
+function completeCheckin(){S.ci=true;S.online[S.myId]=true;S.ps[S.myId]="available";const me=gm(S.myId);notify("✅ "+me.nn+" เช็คอินเข้าสนามสำเร็จ!","success");S.scanPhase="idle";R();rn()}
 
 /* ═══ MAIN APP ═══ */
 function ra(){const me=S.myId?gm(S.myId):null;
