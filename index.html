@@ -15,162 +15,312 @@ body{font-family:'Prompt',sans-serif;background:linear-gradient(160deg,#060e18,#
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
 @keyframes scan{0%{top:10%}50%{top:85%}100%{top:10%}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.notif-box{position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;max-width:360px;pointer-events:none}
-.notif{pointer-events:auto;padding:14px 18px;border-radius:14px;font-size:13px;font-weight:500;box-shadow:0 10px 40px rgba(0,0,0,.35);cursor:pointer;animation:slideIn .35s cubic-bezier(.22,1,.36,1);line-height:1.5;color:#fff}
-.n-info{background:#1e3a5f}.n-ok{background:#0ead82}.n-warn{background:#ff6b35}.n-err{background:#e63946}
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;transition:opacity .8s}
-.login-wrap.out{opacity:0;pointer-events:none}
-.login-box{width:100%;max-width:420px;padding:48px 32px;text-align:center;animation:fadeUp .7s}
-.licon{font-size:64px;margin-bottom:8px;animation:float 3s ease-in-out infinite}
-.ltitle{font-size:28px;font-weight:900;letter-spacing:2px;margin-bottom:4px;background:linear-gradient(90deg,#0ead82,#ff6b35);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.lsub{color:#5a6a7a;font-size:13px;letter-spacing:1px;margin-bottom:36px}
-.flbl{display:block;font-size:11px;color:#6a7a8a;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;text-align:left}
-.fin{width:100%;padding:14px 18px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:#e8edf2;font-size:14px;font-family:'Prompt',sans-serif;outline:none}
-.fin:focus{border-color:#0ead82}
-.fin::placeholder{color:#3a4a5a}
-.ferr{color:#e63946;font-size:13px;font-weight:500;min-height:20px;margin:8px 0}
-.btn{width:100%;padding:14px;border-radius:14px;border:none;font-weight:700;font-size:15px;cursor:pointer;font-family:'Prompt',sans-serif;transition:transform .15s}
-.btn:active{transform:scale(.97)}
-.btn:disabled{opacity:.4;cursor:not-allowed}
-.btn-g{background:linear-gradient(135deg,#0ead82,#0d9070);color:#fff;box-shadow:0 4px 20px rgba(14,173,130,.3)}
-.btn-o{background:#ff6b35;color:#fff}
-.btn-r{background:linear-gradient(135deg,#e63946,#c1121f);color:#fff}
-.btn-gr{background:linear-gradient(135deg,#0ead82,#ff6b35);color:#fff;box-shadow:0 4px 24px rgba(14,173,130,.3)}
-.btn-gh{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#8899aa;font-weight:600;font-size:13px}
-.hdr{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.05);background:rgba(0,0,0,.25);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100}
-.hdr-b{display:flex;align-items:center;gap:12px}
-.hdr-t{font-weight:900;font-size:17px;letter-spacing:1px;background:linear-gradient(90deg,#0ead82,#ff6b35);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hdr-s{font-size:9px;color:#4a5a6a;letter-spacing:2px;text-transform:uppercase}
-.odot{width:8px;height:8px;border-radius:50%;background:#0ead82;box-shadow:0 0 10px #0ead82;display:inline-block}
-.nav{display:flex;gap:2px;padding:8px 12px;background:rgba(0,0,0,.15);border-bottom:1px solid rgba(255,255,255,.04);overflow-x:auto}
-.nav button{flex:1;min-width:54px;padding:10px 4px;border-radius:12px;border:none;background:transparent;color:#5a6a7a;font-weight:600;font-size:10px;cursor:pointer;font-family:'Prompt',sans-serif;text-align:center}
-.nav button.on{background:rgba(14,173,130,.12);color:#0ead82}
-.nav button div{font-size:18px;margin-bottom:2px}
-.main{padding:20px 16px;max-width:640px;margin:0 auto}
-.sec{animation:fadeUp .4s ease}
-.stats{display:flex;gap:10px;margin-bottom:24px}
-.scard{flex:1;padding:18px 14px;border-radius:18px;text-align:center}
-.snum{font-size:32px;font-weight:900;font-family:'Orbitron',monospace}
-.slbl{font-size:11px;color:#6a7a8a;margin-top:4px;font-weight:500}
-.pc{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:16px;border:2px solid rgba(255,255,255,.04);background:rgba(255,255,255,.02);transition:all .25s;margin-bottom:8px}
-.pc.ck{cursor:pointer}.pc.sel{background:rgba(14,173,130,.12);border-color:#0ead82}.pc.pl{background:rgba(255,107,53,.06)}
-.av{width:50px;height:50px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 12px rgba(0,0,0,.2)}
-.av-a{background:linear-gradient(135deg,#0ead82,#1e3a5f)}.av-p{background:linear-gradient(135deg,#ff6b35,#e63946);box-shadow:0 0 16px rgba(255,107,53,.35)}
-.pnm{font-weight:700;font-size:15px;color:#e8edf2}.pfn{font-size:12px;color:#7a8a9a;margin-top:1px}
-.sbdg{font-size:10px;font-weight:700;padding:5px 12px;border-radius:20px;letter-spacing:.8px}
-.sb-a{background:rgba(14,173,130,.15);color:#0ead82}.sb-p{background:rgba(255,107,53,.15);color:#ff6b35}
-.bdg{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;background:rgba(255,255,255,.06);color:#d0d8e0;border:1px solid rgba(255,255,255,.06);margin:0 3px 6px 0}
-.bdg-pk{background:rgba(255,107,53,.1);color:#ff6b35;border-color:rgba(255,107,53,.15);cursor:pointer}
-.bdg-em{color:#3a4a5a;border:1px dashed rgba(255,255,255,.1);background:none}
-.cc{padding:22px;border-radius:20px;margin-bottom:16px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}
-.cc.emp{background:rgba(14,173,130,.04);border-color:rgba(14,173,130,.1)}
-.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.cn{font-weight:800;font-size:18px}
-.cs{font-size:10px;font-weight:700;padding:5px 14px;border-radius:20px;letter-spacing:1px}
-.tlbl{font-size:11px;color:#8899aa;text-align:center;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:4px}
-.tval{font-size:56px;font-weight:900;font-family:'Orbitron',monospace;letter-spacing:2px;text-align:center}
-.tg{color:#0ead82}.to{color:#ff6b35}.tr{color:#e63946;text-shadow:0 0 30px rgba(230,57,70,.5);animation:pulse .8s infinite}
-.scr{display:flex;gap:10px;align-items:center;margin-top:16px}
-.sci{flex:1;text-align:center;font-size:24px;font-weight:800;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#e8edf2;font-family:'Prompt',sans-serif;outline:none}
-.sci:focus{border-color:#0ead82}
-.scd{font-weight:900;color:#3a4a5a;font-size:24px;padding-top:16px}
-.scl{font-size:10px;color:#5a6a7a;font-weight:600;margin-bottom:4px}
-.dsg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;background:rgba(255,255,255,.03);border-radius:16px;padding:18px}
-.dsb{padding:14px 18px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);margin-bottom:16px}
-.pt{padding:16px 18px;border-radius:16px;margin-bottom:20px;background:rgba(14,173,130,.06);border:1px solid rgba(14,173,130,.12)}
-.qc{padding:18px;border-radius:16px;margin-bottom:10px;background:rgba(123,104,238,.06);border:1px solid rgba(123,104,238,.1)}
-.hc{padding:18px;border-radius:16px;margin-bottom:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05)}
-.hg{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;font-size:12px}
-.hcl{text-align:center}.hcll{color:#5a6a7a;font-size:9px;font-weight:600}
-.amf{padding:24px;border-radius:18px;margin-bottom:24px;background:rgba(14,173,130,.05);border:1px solid rgba(14,173,130,.1);animation:fadeUp .3s}
-.avg{display:flex;flex-wrap:wrap;gap:8px}
-.avo{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;background:rgba(255,255,255,.03);border:2px solid transparent}
-.avo.on{background:rgba(14,173,130,.2);border-color:#0ead82}
-.mr{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:16px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);margin-bottom:8px}
-.mr.off{opacity:.5}
-.emp-s{text-align:center;padding:48px 20px;color:#3a4a5a}
-.emp-i{font-size:48px;margin-bottom:12px;opacity:.3}
-.slb{font-size:12px;color:#5a6a7a;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.fw{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+@keyframes glow{0%,100%{box-shadow:0 0 8px #0ead82}50%{box-shadow:0 0 24px #0ead82,0 0 48px rgba(14,173,130,.3)}}
+@keyframes countdown{from{transform:scale(1.5);opacity:0}to{transform:scale(1);opacity:1}}
+.nb{position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;max-width:380px;pointer-events:none}
+.nf{pointer-events:auto;padding:14px 18px;border-radius:14px;font-size:13px;font-weight:500;box-shadow:0 10px 40px rgba(0,0,0,.35);cursor:pointer;animation:slideIn .35s cubic-bezier(.22,1,.36,1);line-height:1.5;color:#fff}
+.ni{background:#1e3a5f}.ns{background:#0ead82}.nw{background:#ff6b35}.ne{background:#e63946}
+.lw{min-height:100vh;display:flex;align-items:center;justify-content:center;transition:opacity .8s}
+.lw.out{opacity:0;pointer-events:none}
+.lb{width:100%;max-width:420px;padding:48px 32px;text-align:center;animation:fadeUp .7s}
+.li{font-size:64px;margin-bottom:8px;animation:float 3s ease-in-out infinite}
+.lt{font-size:28px;font-weight:900;letter-spacing:2px;margin-bottom:4px;background:linear-gradient(90deg,#0ead82,#ff6b35);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.ls{color:#5a6a7a;font-size:13px;letter-spacing:1px;margin-bottom:36px}
+.fl{display:block;font-size:11px;color:#6a7a8a;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;text-align:left}
+.fi{width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:#e8edf2;font-size:14px;font-family:'Prompt',sans-serif;outline:none}
+.fi:focus{border-color:#0ead82}.fi::placeholder{color:#3a4a5a}
+.b{width:100%;padding:14px;border-radius:14px;border:none;font-weight:700;font-size:15px;cursor:pointer;font-family:'Prompt',sans-serif;transition:transform .15s}
+.b:active{transform:scale(.97)}.b:disabled{opacity:.4;cursor:not-allowed}
+.bg{background:linear-gradient(135deg,#0ead82,#0d9070);color:#fff;box-shadow:0 4px 20px rgba(14,173,130,.3)}
+.bo{background:#ff6b35;color:#fff}.br{background:linear-gradient(135deg,#e63946,#c1121f);color:#fff}
+.bgr{background:linear-gradient(135deg,#0ead82,#ff6b35);color:#fff}
+.bgh{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#8899aa;font-weight:600;font-size:13px}
+.bp{background:rgba(123,104,238,.15);color:#7b68ee;border:1px solid rgba(123,104,238,.2)}
+.hd{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.05);background:rgba(0,0,0,.25);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100}
+.hb{display:flex;align-items:center;gap:12px}
+.ht{font-weight:900;font-size:17px;letter-spacing:1px;background:linear-gradient(90deg,#0ead82,#ff6b35);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hs{font-size:9px;color:#4a5a6a;letter-spacing:2px;text-transform:uppercase}
+.od{width:8px;height:8px;border-radius:50%;background:#0ead82;box-shadow:0 0 10px #0ead82;display:inline-block}
+.nv{display:flex;gap:2px;padding:8px 12px;background:rgba(0,0,0,.15);border-bottom:1px solid rgba(255,255,255,.04);overflow-x:auto}
+.nv button{flex:1;min-width:50px;padding:10px 3px;border-radius:12px;border:none;background:transparent;color:#5a6a7a;font-weight:600;font-size:9px;cursor:pointer;font-family:'Prompt',sans-serif;text-align:center}
+.nv button.on{background:rgba(14,173,130,.12);color:#0ead82}
+.nv button div{font-size:16px;margin-bottom:2px}
+.mn{padding:20px 16px;max-width:640px;margin:0 auto}
+.sc{animation:fadeUp .4s ease}
+.sr{display:flex;gap:8px;margin-bottom:20px}
+.sk{flex:1;padding:14px 10px;border-radius:16px;text-align:center}
+.sn{font-size:28px;font-weight:900;font-family:'Orbitron',monospace}
+.sl2{font-size:10px;color:#6a7a8a;margin-top:4px;font-weight:500}
+/* Dashboard player card - LARGER photo */
+.dpc{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;border:1px solid rgba(255,255,255,.04);background:rgba(255,255,255,.02);margin-bottom:8px}
+.dpc-av{width:64px;height:64px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 4px 16px rgba(0,0,0,.25);overflow:hidden;border:3px solid rgba(255,255,255,.08)}
+.dpc-av img{width:100%;height:100%;object-fit:cover}
+.dpc-av.on{border-color:#0ead82;box-shadow:0 0 16px rgba(14,173,130,.3)}
+.dpc-av.play{border-color:#ff6b35;box-shadow:0 0 16px rgba(255,107,53,.3)}
+.dpc-av.off{opacity:.5;border-color:rgba(255,255,255,.04)}
+.pc{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:14px;border:2px solid rgba(255,255,255,.04);background:rgba(255,255,255,.02);transition:all .25s;margin-bottom:6px}
+.pc.ck{cursor:pointer}.pc.sel{background:rgba(14,173,130,.12);border-color:#0ead82}
+.av{width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 12px rgba(0,0,0,.2);overflow:hidden}
+.av img{width:100%;height:100%;object-fit:cover}
+.ava{background:linear-gradient(135deg,#0ead82,#1e3a5f)}.avp{background:linear-gradient(135deg,#ff6b35,#e63946)}.avo2{background:rgba(255,255,255,.08)}
+.sb{font-size:9px;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:.5px}
+.bd{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:18px;font-size:11px;font-weight:600;background:rgba(255,255,255,.06);color:#d0d8e0;border:1px solid rgba(255,255,255,.06);margin:0 3px 5px 0}
+.cc{padding:20px;border-radius:18px;margin-bottom:14px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}
+.cc.em{background:rgba(14,173,130,.04);border-color:rgba(14,173,130,.1)}
+.tl{font-size:11px;color:#8899aa;text-align:center;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:4px}
+.tv{font-size:48px;font-weight:900;font-family:'Orbitron',monospace;letter-spacing:2px;text-align:center}
+.tg{color:#0ead82}.tt{color:#ff6b35}.td{color:#e63946;text-shadow:0 0 30px rgba(230,57,70,.5);animation:pulse .8s infinite}
+.si{flex:1;text-align:center;font-size:22px;font-weight:800;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#e8edf2;font-family:'Prompt',sans-serif;outline:none}
+.si:focus{border-color:#0ead82}
+.prc{padding:18px;border-radius:16px;margin-bottom:10px;border:1px solid rgba(14,173,130,.12);background:rgba(14,173,130,.04)}
+.prc.open{border-color:rgba(14,173,130,.2);animation:glow 2s infinite}
+.dots{display:flex;gap:6px;margin:12px 0}
+.dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden}
+.dot img{width:100%;height:100%;object-fit:cover}
+.dot.filled{background:linear-gradient(135deg,#0ead82,#1e3a5f)}
+.dot.empty{background:rgba(255,255,255,.04);border:2px dashed rgba(255,255,255,.1);color:#3a4a5a;font-size:14px}
+.leader-tag{font-size:9px;background:rgba(255,193,7,.15);color:#ffc107;padding:2px 8px;border-radius:8px;font-weight:700}
+.qc{padding:16px;border-radius:14px;margin-bottom:10px;background:rgba(123,104,238,.06);border:1px solid rgba(123,104,238,.1)}
+.hc{padding:16px;border-radius:14px;margin-bottom:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05)}
+.hg{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;font-size:11px}
+.ep{text-align:center;padding:40px 20px;color:#3a4a5a}
+.ei{font-size:44px;margin-bottom:10px;opacity:.3}
+.lb2{font-size:11px;color:#5a6a7a;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+.fw{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
 .tc{text-align:center}
-.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt24{margin-top:24px}.mb16{margin-bottom:16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}
 input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
-.scan-w{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;min-height:80vh;animation:fadeUp .5s}
-.scan-c{width:200px;height:200px;border-radius:50%;border:3px solid #0ead82;display:flex;align-items:center;justify-content:center;position:relative;background:rgba(255,255,255,.02);transition:all .5s;overflow:hidden}
-.scan-c.on{background:rgba(14,173,130,.08)}
-.scan-l{position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#0ead82,transparent);box-shadow:0 0 20px #0ead82;animation:scan 2s ease-in-out infinite}
-@media(max-width:480px){.ltitle{font-size:22px}.tval{font-size:44px}.snum{font-size:26px}.main{padding:16px 12px}}
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+/* Camera */
+.cam-wrap{position:relative;width:240px;height:240px;border-radius:50%;overflow:hidden;border:4px solid #0ead82;margin:0 auto}
+.cam-wrap video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.cam-wrap.sq{border-radius:20px;width:280px;height:280px}
+.scan-line2{position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#0ead82,transparent);box-shadow:0 0 20px #0ead82;animation:scan 2s ease-in-out infinite}
+.loc-ok{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:500;background:rgba(14,173,130,.1);color:#0ead82;border:1px solid rgba(14,173,130,.15);margin:12px 0}
+.loc-err{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:500;background:rgba(230,57,70,.1);color:#e63946;border:1px solid rgba(230,57,70,.15);margin:12px 0}
+.loc-wait{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:500;background:rgba(255,193,7,.1);color:#ffc107;border:1px solid rgba(255,193,7,.15);margin:12px 0}
+/* Face reg steps */
+.reg-steps{display:flex;gap:4px;margin:16px 0}
+.reg-step{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.08)}
+.reg-step.done{background:#0ead82}
+.reg-step.cur{background:#ff6b35;animation:pulse 1s infinite}
+.pose-guide{font-size:48px;animation:countdown .4s ease}
+.pose-label{font-size:18px;font-weight:800;margin:8px 0;color:#ff6b35}
+.pose-sub{font-size:12px;color:#6a7a8a;margin-bottom:16px}
+.reg-thumbs{display:flex;gap:8px;justify-content:center;margin:12px 0;flex-wrap:wrap}
+.reg-thumb{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #0ead82}
+.reg-thumb.empty{border:2px dashed rgba(255,255,255,.1);background:rgba(255,255,255,.04)}
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:center;justify-content:center;animation:fadeUp .2s}
+.modal{background:#0d1b2a;border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:28px;width:90%;max-width:420px;max-height:90vh;overflow-y:auto}
+.modal h3{font-size:16px;font-weight:800;margin-bottom:16px}
+.amf{padding:20px;border-radius:16px;margin-bottom:16px;background:rgba(14,173,130,.05);border:1px solid rgba(14,173,130,.1);animation:fadeUp .3s}
+.avg{display:flex;flex-wrap:wrap;gap:6px}
+.avo{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;background:rgba(255,255,255,.03);border:2px solid transparent}
+.avo.on{background:rgba(14,173,130,.2);border-color:#0ead82}
+.mr{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);margin-bottom:6px}
+.mr.off{opacity:.5}
+.ack-btn{background:linear-gradient(135deg,#7b68ee,#6c5ce7);color:#fff;padding:12px;border-radius:12px;border:none;font-weight:700;font-size:14px;width:100%;cursor:pointer;font-family:'Prompt',sans-serif;animation:glow 1.5s infinite;margin-top:10px}
+.admin-btns{display:flex;gap:4px}
+.admin-btns button{padding:4px 10px;border-radius:8px;border:none;font-size:10px;font-weight:600;cursor:pointer;font-family:'Prompt',sans-serif}
+@media(max-width:480px){.lt{font-size:22px}.tv{font-size:40px}.sn{font-size:24px}.mn{padding:16px 12px}.cam-wrap{width:200px;height:200px}.cam-wrap.sq{width:240px;height:240px}.dpc-av{width:56px;height:56px;font-size:26px}}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
-const COURTS=[{id:1,name:"Court A"},{id:2,name:"Court B"},{id:3,name:"Court C"}];
-const DEF_M=[
-{id:"YB-001",firstName:"สมชาย",lastName:"ใจดี",nickname:"ชาย",avatar:"🧑",ms:"active"},
-{id:"YB-002",firstName:"สุดา",lastName:"แสงจันทร์",nickname:"ดา",avatar:"👩",ms:"active"},
-{id:"YB-003",firstName:"วิทยา",lastName:"เก่งกล้า",nickname:"วิท",avatar:"👨",ms:"active"},
-{id:"YB-004",firstName:"นภา",lastName:"สดใส",nickname:"นภ",avatar:"👧",ms:"active"},
-{id:"YB-005",firstName:"ธนา",lastName:"รุ่งเรือง",nickname:"ธน",avatar:"🧔",ms:"active"},
-{id:"YB-006",firstName:"มานี",lastName:"ดีงาม",nickname:"นี",avatar:"👩‍🦱",ms:"active"},
-{id:"YB-007",firstName:"ปิติ",lastName:"สุขสันต์",nickname:"ปิ",avatar:"👦",ms:"active"},
-{id:"YB-008",firstName:"รัตนา",lastName:"วงศ์ดี",nickname:"แนท",avatar:"👱‍♀️",ms:"active"}
-];
-const WU=300,RM=300;
+const COURTS=[{id:1,name:"Court 1"},{id:2,name:"Court 2"},{id:3,name:"Court 3"},{id:4,name:"Court 4"}];
+const CLAT=6.546966564532681,CLNG=101.2800595164241,MRAD=100;
+const WU_TIME=300,START_GRACE=300,REST_TIME=900,REST_GRACE=300;
 const AVS=["🧑","👩","👨","👧","🧔","👩‍🦱","👦","👱‍♀️","🧑‍🦰","👩‍🦳","🧑‍🦱","👨‍🦰","👴","👵","🧒","👲"];
-const S={auth:"login",adm:false,myId:null,ci:false,mems:[],hist:[],ps:{},
-courts:COURTS.map(c=>({...c,m:null})),q:[],view:"dashboard",pp:[],sam:false,
-nm:{fn:"",ln:"",nn:"",av:"🧑",ms:"active"}};
+const POSES=[{icon:"😐",label:"หน้าตรง",sub:"มองตรงกล้อง"},{icon:"👈",label:"หันซ้าย",sub:"หันหน้าไปทางซ้าย"},{icon:"👉",label:"หันขวา",sub:"หันหน้าไปทางขวา"},{icon:"☝️",label:"เงยหน้า",sub:"เงยหน้าขึ้นเล็กน้อย"},{icon:"👇",label:"ก้มหน้า",sub:"ก้มหน้าลงเล็กน้อย"},{icon:"📸",label:"ถ่ายรูปโปรไฟล์",sub:"ยิ้มสวยๆ! รูปนี้จะแสดงใน Dashboard"}];
+const DEF_M=[
+{id:"YB-001",fn:"สมชาย",ln:"ใจดี",nn:"ชาย",av:"🧑",ms:"active",face:null,poses:null},
+{id:"YB-002",fn:"สุดา",ln:"แสงจันทร์",nn:"ดา",av:"👩",ms:"active",face:null,poses:null},
+{id:"YB-003",fn:"วิทยา",ln:"เก่งกล้า",nn:"วิท",av:"👨",ms:"active",face:null,poses:null},
+{id:"YB-004",fn:"นภา",ln:"สดใส",nn:"นภ",av:"👧",ms:"active",face:null,poses:null},
+{id:"YB-005",fn:"ธนา",ln:"รุ่งเรือง",nn:"ธน",av:"🧔",ms:"active",face:null,poses:null},
+{id:"YB-006",fn:"มานี",ln:"ดีงาม",nn:"นี",av:"👩‍🦱",ms:"active",face:null,poses:null},
+{id:"YB-007",fn:"ปิติ",ln:"สุขสันต์",nn:"ปิ",av:"👦",ms:"active",face:null,poses:null},
+{id:"YB-008",fn:"รัตนา",ln:"วงศ์ดี",nn:"แนท",av:"👱‍♀️",ms:"active",face:null,poses:null}];
+
+const S={auth:"login",adm:false,myId:null,ci:false,online:{},mems:[],hist:[],ps:{},
+courts:COURTS.map(c=>({...c,party:null,phase:null,timer:0,scores:{},times:{}})),
+q:[],parties:[],view:"dashboard",sam:false,nm:{fn:"",ln:"",nn:"",av:"🧑",ms:"active"},pid:0,
+modal:null,editId:null,geoOk:null,geoDist:null,camStream:null,
+regStep:0,regPhotos:[],scanPhase:"idle"};
+
 function fm(s){const m=Math.floor(Math.abs(s)/60),sc=Math.abs(s)%60;return m+":"+String(sc).padStart(2,"0")}
 function ds(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")}
 function $(s){return document.querySelector(s)}
-function ld(){try{const m=localStorage.getItem("ym"),h=localStorage.getItem("yh");S.mems=m?JSON.parse(m):DEF_M.map(x=>({...x}));S.hist=h?JSON.parse(h):[];}catch(e){S.mems=DEF_M.map(x=>({...x}));S.hist=[];}}
-function sv(){localStorage.setItem("ym",JSON.stringify(S.mems))}
-function sh(){localStorage.setItem("yh",JSON.stringify(S.hist))}
+function gm(id){return S.mems.find(m=>m.id===id)}
+function isOpen(){const d=new Date(),t=d.getHours()*60+d.getMinutes();return t>=16*60+30||t===0}
+function timeStr(){const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")}
+function getMyP(){return S.parties.find(p=>p.members.some(m=>m.id===S.myId))}
+function avH(m,sz){if(m.face)return`<img src="${m.face}" alt="${m.nn}">`;return m.av}
+function hav(a1,o1,a2,o2){const R=6371e3,d1=(a2-a1)*Math.PI/180,d2=(o2-o1)*Math.PI/180;const a=Math.sin(d1/2)**2+Math.cos(a1*Math.PI/180)*Math.cos(a2*Math.PI/180)*Math.sin(d2/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
+function ld(){try{const m=localStorage.getItem("ym4"),h=localStorage.getItem("yh4");S.mems=m?JSON.parse(m):DEF_M.map(x=>({...x}));S.hist=h?JSON.parse(h):[];}catch{S.mems=DEF_M.map(x=>({...x}));S.hist=[];}}
+function sv(){localStorage.setItem("ym4",JSON.stringify(S.mems))}
+function sh(){localStorage.setItem("yh4",JSON.stringify(S.hist))}
+
 let nc=0;const ns=[];
-function notify(msg,t="info"){const id=++nc;ns.push({id,msg,t});rn();setTimeout(()=>{const i=ns.findIndex(n=>n.id===id);if(i>=0){ns.splice(i,1);rn();}},5000)}
-function dn(id){const i=ns.findIndex(n=>n.id===id);if(i>=0){ns.splice(i,1);rn();}}
-function rn(){const el=$("#nb");if(!el)return;el.innerHTML=ns.map(n=>`<div class="notif n-${n.t==='success'?'ok':n.t==='warn'?'warn':n.t==='error'?'err':'info'}" onclick="dn(${n.id})">${n.msg}</div>`).join("")}
-function R(){const a=$("#app");if(S.auth==="login"||S.auth==="fo"){a.innerHTML=rl();if(S.auth==="fo")setTimeout(()=>{const w=$(".login-wrap");if(w)w.classList.add("out")},10)}else{a.innerHTML=ra()}rn()}
-function rl(){return`<div class="login-wrap"><div class="login-box"><div class="licon">🏸</div><h1 class="ltitle">YALA BADMINTON</h1><p class="lsub">CLUB MANAGEMENT SYSTEM</p><div style="display:flex;flex-direction:column;gap:14px"><div><label class="flbl">Username / Member ID</label><input class="fin" id="lu" placeholder="เช่น 009 หรือ YB-001" onkeydown="if(event.key==='Enter')doLogin()"></div><div><label class="flbl">Password</label><input class="fin" id="lp" type="password" placeholder="รหัสผ่าน" onkeydown="if(event.key==='Enter')doLogin()"></div><div class="ferr" id="le"></div><button class="btn btn-g" onclick="doLogin()" style="font-size:16px;padding:16px">เข้าสู่ระบบ</button></div><div style="margin-top:32px;padding:16px;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);font-size:11px;color:#4a5a6a">Admin: 009 / bxkssnrz<br>สมาชิก: ใช้ Member ID เช่น YB-001</div></div></div>`}
-function doLogin(){const u=($("#lu")||{}).value||"",p=($("#lp")||{}).value||"";if(u.trim()==="009"&&p.trim()==="bxkssnrz"){S.adm=true;S.ci=true;S.auth="fo";R();setTimeout(()=>{S.auth="app";R()},800)}else{const f=S.mems.find(m=>m.id===u.trim()||m.nickname===u.trim());if(f){S.adm=false;S.myId=f.id;S.ps[f.id]="available";S.auth="fo";R();setTimeout(()=>{S.auth="app";R()},800)}else{const e=$("#le");if(e)e.textContent="ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"}}}
-function logout(){S.auth="login";S.adm=false;S.ci=false;S.myId=null;S.ps={};S.pp=[];R()}
-function ra(){const me=S.mems.find(m=>m.id===S.myId);const tabs=[{k:"dashboard",i:"📊",l:"Dashboard"},...(!S.adm?[{k:"party",i:"🎯",l:"Party"}]:[]),{k:"courts",i:"🏸",l:"Courts"},{k:"queue",i:"📋",l:"คิว"},{k:"history",i:"📜",l:"ประวัติ"},...(S.adm?[{k:"members",i:"👥",l:"สมาชิก"}]:[])];
-let c="";if(!S.adm&&!S.ci){c=rsc()}else{const vf={dashboard:rd,party:rp,courts:rco,queue:rq,history:rh,members:rm};c=`<nav class="nav">${tabs.map(t=>`<button class="${S.view===t.k?'on':''}" onclick="sv2('${t.k}')"><div>${t.i}</div>${t.l}</button>`).join("")}</nav><div class="main"><div class="sec">${(vf[S.view]||rd)()}</div></div>`}
-return`<div id="nb" class="notif-box"></div><header class="hdr"><div class="hdr-b"><span style="font-size:28px">🏸</span><div><div class="hdr-t">YALA BADMINTON</div><div class="hdr-s">${S.adm?"⚙️ ADMIN PANEL":"Club Management"}</div></div></div><div style="display:flex;align-items:center;gap:12px">${S.ci&&me?`<div style="display:flex;align-items:center;gap:6px"><span class="odot"></span><span style="font-size:12px;color:#8899aa">${me.nickname}</span></div>`:""}<button class="btn btn-gh" onclick="logout()" style="width:auto;padding:6px 14px;font-size:11px">ออก</button></div></header>${c}`}
+function notify(msg,t="info"){const id=++nc;ns.push({id,msg,t});rn();setTimeout(()=>{const i=ns.findIndex(n=>n.id===id);if(i>=0){ns.splice(i,1);rn()}},5000)}
+function dn(id){const i=ns.findIndex(n=>n.id===id);if(i>=0){ns.splice(i,1);rn()}}
+function rn(){const el=$("#nb");if(!el)return;el.innerHTML=ns.map(n=>`<div class="nf n${n.t==='success'?'s':n.t==='warn'?'w':n.t==='error'?'e':'i'}" onclick="dn(${n.id})">${n.msg}</div>`).join("")}
+
+function stopCam(){if(S.camStream){S.camStream.getTracks().forEach(t=>t.stop());S.camStream=null}}
+async function startCam(sel){try{stopCam();const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:{ideal:480},height:{ideal:480}}});S.camStream=st;setTimeout(()=>{const v=$(sel);if(v){v.srcObject=st;v.play()}},100)}catch(e){notify("❌ เปิดกล้องไม่ได้: "+e.message,"error")}}
+function capPhoto(sel){const v=$(sel);if(!v||!v.videoWidth)return null;const c=document.createElement("canvas");c.width=300;c.height=300;const ctx=c.getContext("2d");const s=Math.min(v.videoWidth,v.videoHeight);const sx=(v.videoWidth-s)/2,sy=(v.videoHeight-s)/2;ctx.drawImage(v,sx,sy,s,s,0,0,300,300);return c.toDataURL("image/jpeg",0.75)}
+function checkGeo(cb){S.geoOk=null;S.geoDist=null;if(!navigator.geolocation){S.geoOk=false;cb(false);return}navigator.geolocation.getCurrentPosition(p=>{const d=hav(p.coords.latitude,p.coords.longitude,CLAT,CLNG);S.geoDist=Math.round(d);S.geoOk=d<=MRAD;cb(S.geoOk)},()=>{S.geoOk=false;S.geoDist=-1;cb(false)},{enableHighAccuracy:true,timeout:10000})}
+
+function R(){const a=$("#app");if(S.auth==="login"||S.auth==="fo"){a.innerHTML=rl();if(S.auth==="fo")setTimeout(()=>{const w=$(".lw");if(w)w.classList.add("out")},10)}else a.innerHTML=ra();rn()}
+
+/* LOGIN */
+function rl(){return`<div class="lw"><div class="lb"><div class="li">🏸</div><h1 class="lt">YALA BADMINTON</h1><p class="ls">CLUB MANAGEMENT SYSTEM</p><div style="display:flex;flex-direction:column;gap:14px"><div><label class="fl">Username / Member ID</label><input class="fi" id="lu" placeholder="เช่น 009 หรือ YB-001" onkeydown="if(event.key==='Enter')doL()"></div><div><label class="fl">Password</label><input class="fi" id="lp" type="password" placeholder="รหัสผ่าน" onkeydown="if(event.key==='Enter')doL()"></div><div style="color:#e63946;font-size:13px;min-height:20px;margin:8px 0" id="le"></div><button class="b bg" onclick="doL()" style="font-size:16px;padding:16px">เข้าสู่ระบบ</button></div><div style="margin-top:32px;padding:16px;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);font-size:11px;color:#4a5a6a">Admin: 009 / bxkssnrz<br>สมาชิก: ใช้ Member ID เช่น YB-001</div></div></div>`}
+function doL(){const u=($("#lu")||{}).value||"",p=($("#lp")||{}).value||"";if(u.trim()==="009"&&p.trim()==="bxkssnrz"){S.adm=true;S.ci=true;S.myId=null;S.auth="fo";R();setTimeout(()=>{S.auth="app";R()},800)}else{const f=S.mems.find(m=>m.id===u.trim()||m.nn===u.trim());if(f){S.adm=false;S.myId=f.id;S.ci=false;S.scanPhase="idle";S.regStep=0;S.regPhotos=[];S.auth="fo";R();setTimeout(()=>{S.auth="app";R()},800)}else{const e=$("#le");if(e)e.textContent="ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"}}}
+function logout(){stopCam();S.auth="login";S.adm=false;S.ci=false;S.myId=null;S.ps={};S.online={};S.parties=[];S.q=[];S.courts.forEach(c=>{c.party=null;c.phase=null;c.timer=0});S.modal=null;R()}
+
+/* ═══ FACE REGISTRATION (Self-service) ═══ */
+function renderFaceReg(){const me=gm(S.myId);const step=S.regStep;const pose=POSES[step];
+const steps=POSES.map((_,i)=>`<div class="reg-step ${i<step?'done':i===step?'cur':''}"></div>`).join("");
+const thumbs=S.regPhotos.map(p=>`<img class="reg-thumb" src="${p}">`).join("")+Array.from({length:6-S.regPhotos.length}).map(()=>'<div class="reg-thumb empty"></div>').join("");
+return`<div style="text-align:center;padding:24px;animation:fadeUp .4s">
+<h2 style="font-weight:800;font-size:20px;margin-bottom:4px">📷 ลงทะเบียนใบหน้า</h2>
+<p style="color:#6a7a8a;font-size:12px;margin-bottom:16px">ขั้นตอนที่ ${step+1} จาก 6</p>
+<div class="reg-steps">${steps}</div>
+<div class="cam-wrap sq"><video id="reg-vid" autoplay playsinline muted></video></div>
+<div style="margin-top:16px">
+<div class="pose-guide" key="${step}">${pose.icon}</div>
+<div class="pose-label">${pose.label}</div>
+<div class="pose-sub">${pose.sub}</div>
+</div>
+<div class="reg-thumbs">${thumbs}</div>
+<button class="b ${step===5?'bgr':'bg'}" onclick="capRegStep()" style="font-size:14px;padding:12px">${step===5?"📸 ถ่ายรูปโปรไฟล์ & เสร็จสิ้น":"📸 ถ่ายภาพ → ขั้นตอนถัดไป"}</button>
+<button class="b bgh mt8" onclick="S.regStep=0;S.regPhotos=[];stopCam();R()" style="font-size:12px;padding:10px">ยกเลิก</button>
+</div>`}
+
+function startFaceReg(){S.regStep=0;S.regPhotos=[];R();setTimeout(()=>startCam("#reg-vid"),300)}
+
+function capRegStep(){const photo=capPhoto("#reg-vid");if(!photo){notify("ถ่ายภาพไม่สำเร็จ","error");return}
+S.regPhotos.push(photo);
+if(S.regStep===5){// Last step = profile photo
+stopCam();const me=gm(S.myId);me.face=photo;me.poses=S.regPhotos.slice(0,5);sv();
+notify("✅ ลงทะเบียนใบหน้าสำเร็จ!","success");S.scanPhase="idle";S.regStep=0;S.regPhotos=[];R();rn()}else{S.regStep++;R();rn()}}
+
+/* ═══ CHECK-IN FLOW ═══ */
+function renderCheckin(){const me=gm(S.myId);
+// No face registered → go to registration
+if(!me.face){if(S.regStep>0||S.regPhotos.length>0)return renderFaceReg();
+return`<div style="text-align:center;padding:40px;animation:fadeUp .5s">
+<div style="font-size:56px;margin-bottom:12px">📷</div>
+<h2 style="font-weight:800;font-size:20px;margin-bottom:8px">ลงทะเบียนใบหน้า</h2>
+<p style="color:#6a7a8a;font-size:13px;line-height:1.7;margin-bottom:20px">คุณยังไม่ได้ลงทะเบียนใบหน้า<br>กรุณาลงทะเบียนก่อนเช็คอิน</p>
+<p style="color:#5a6a7a;font-size:12px;margin-bottom:20px">ระบบจะถ่ายภาพ 6 ท่า: หน้าตรง, หันซ้าย, หันขวา,<br>เงยหน้า, ก้มหน้า, และรูปโปรไฟล์</p>
+<button class="b bgr" onclick="startFaceReg()">📷 เริ่มลงทะเบียนใบหน้า</button></div>`}
+
+// Has face → check-in flow
+if(S.scanPhase==="idle")return`<div style="text-align:center;padding:40px;animation:fadeUp .5s">
+<div style="width:100px;height:100px;border-radius:50%;margin:0 auto 16px;overflow:hidden;border:3px solid #0ead82"><img src="${me.face}" style="width:100%;height:100%;object-fit:cover"></div>
+<h2 style="font-weight:800;font-size:20px;margin-bottom:8px">สวัสดี ${me.nn}!</h2>
+<p style="color:#6a7a8a;font-size:13px;line-height:1.7;margin-bottom:20px">เช็คอินด้วยใบหน้าเพื่อเข้าใช้งาน<br>ต้องอยู่ภายในรัศมี ${MRAD}m จากสนาม</p>
+<button class="b bg" onclick="startCI()">📍 ตรวจสอบตำแหน่ง & เช็คอิน</button></div>`;
+if(S.scanPhase==="geo")return`<div style="text-align:center;padding:40px;animation:fadeUp .3s"><div style="font-size:48px;margin-bottom:12px">📍</div><div class="loc-wait">⏳ กำลังตรวจสอบตำแหน่ง...</div></div>`;
+if(S.scanPhase==="geo_fail")return`<div style="text-align:center;padding:40px;animation:fadeUp .3s"><div style="font-size:48px;margin-bottom:12px">❌</div><div class="loc-err">📍 นอกรัศมีสนาม ${S.geoDist>=0?"("+S.geoDist+"m)":"(ไม่สามารถระบุ)"}</div><p style="color:#6a7a8a;font-size:12px;margin:12px 0">ต้องอยู่ภายใน ${MRAD}m</p><button class="b bo mt8" onclick="S.scanPhase='idle';R()">ลองใหม่</button></div>`;
+if(S.scanPhase==="camera")return`<div style="text-align:center;padding:24px;animation:fadeUp .3s"><div class="loc-ok">✅ อยู่ในรัศมี (${S.geoDist}m)</div><h3 style="font-weight:800;font-size:18px;margin-bottom:14px">📷 สแกนใบหน้า</h3><div class="cam-wrap"><video id="ci-cam" autoplay playsinline muted></video><div class="scan-line2"></div></div><p style="color:#6a7a8a;font-size:12px;margin:14px 0">หันหน้าตรงกล้อง</p><button class="b bg" onclick="doCI()">📸 ถ่ายภาพ & เช็คอิน</button></div>`;
+if(S.scanPhase==="matching")return`<div style="text-align:center;padding:40px"><div style="font-size:48px;margin-bottom:12px">🔄</div><p style="color:#ffc107;font-weight:600">กำลังจับคู่ใบหน้า...</p></div>`;
+return""}
+
+function startCI(){S.scanPhase="geo";R();checkGeo(ok=>{if(ok){S.scanPhase="camera";R();setTimeout(()=>startCam("#ci-cam"),300)}else{S.scanPhase="geo_fail";R()}})}
+function doCI(){const photo=capPhoto("#ci-cam");stopCam();if(!photo){notify("❌ ถ่ายภาพไม่สำเร็จ","error");S.scanPhase="idle";R();return}
+S.scanPhase="matching";R();
+setTimeout(()=>{S.ci=true;S.online[S.myId]=true;S.ps[S.myId]="available";notify("✅ "+gm(S.myId).nn+" เช็คอินสำเร็จ!","success");S.scanPhase="idle";R();rn()},1500)}
+
+/* ═══ MAIN APP ═══ */
+function ra(){const me=S.myId?gm(S.myId):null;
+const tabs=[{k:"dashboard",i:"📊",l:"หน้าหลัก"},{k:"parties",i:"🎯",l:"Party"},{k:"courts",i:"🏸",l:"Courts"},{k:"queue",i:"📋",l:"คิว"},{k:"history",i:"📜",l:"ประวัติ"},...(S.adm?[{k:"members",i:"👥",l:"สมาชิก"}]:[])];
+let c="";
+if(!S.adm&&!S.ci)c=renderCheckin();
+else{const vf={dashboard:rd,parties:rpa,courts:rco,queue:rq,history:rh,members:rm};
+c=`<nav class="nv">${tabs.map(t=>`<button class="${S.view===t.k?'on':''}" onclick="sv2('${t.k}')"><div>${t.i}</div>${t.l}</button>`).join("")}</nav><div class="mn"><div class="sc">${(vf[S.view]||rd)()}</div></div>`}
+let modal="";
+if(S.modal==="edit"){const m=gm(S.editId),nm=S.nm;modal=`<div class="modal-bg" onclick="closeM()"><div class="modal" onclick="event.stopPropagation()"><h3>✏️ แก้ไข ${m?m.nn:""}</h3><div style="display:flex;flex-direction:column;gap:10px"><div class="g2"><div><label class="fl">ชื่อจริง</label><input class="fi" value="${nm.fn}" oninput="S.nm.fn=this.value"></div><div><label class="fl">นามสกุล</label><input class="fi" value="${nm.ln}" oninput="S.nm.ln=this.value"></div></div><div><label class="fl">ชื่อเล่น</label><input class="fi" value="${nm.nn}" oninput="S.nm.nn=this.value"></div><div><label class="fl">อวาตาร์</label><div class="avg">${AVS.map(a=>`<div class="avo${nm.av===a?" on":""}" onclick="S.nm.av='${a}';R()">${a}</div>`).join("")}</div></div><div><label class="fl">สถานะ</label><div style="display:flex;gap:6px"><button class="b" style="flex:1;padding:8px;font-size:12px;${nm.ms==='active'?'background:rgba(14,173,130,.15);color:#0ead82':'background:rgba(255,255,255,.03);color:#5a6a7a'}" onclick="S.nm.ms='active';R()">Active</button><button class="b" style="flex:1;padding:8px;font-size:12px;${nm.ms==='inactive'?'background:rgba(230,57,70,.15);color:#e63946':'background:rgba(255,255,255,.03);color:#5a6a7a'}" onclick="S.nm.ms='inactive';R()">Inactive</button></div></div><button class="b bg" onclick="saveE()">💾 บันทึก</button><button class="b bgh" onclick="closeM()">ยกเลิก</button></div></div></div>`}
+if(S.modal==="facereg"){const m=gm(S.editId);modal=`<div class="modal-bg" onclick="closeM()"><div class="modal" onclick="event.stopPropagation()"><h3>📷 ลงทะเบียนใบหน้า — ${m?m.nn:""}</h3>${m&&m.face?`<div class="tc" style="margin-bottom:12px"><img src="${m.face}" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #0ead82"><div style="font-size:11px;color:#0ead82;margin-top:4px">มีข้อมูลแล้ว</div></div>`:""}<div class="cam-wrap" style="width:200px;height:200px"><video id="adm-cam" autoplay playsinline muted></video></div><p style="color:#6a7a8a;font-size:12px;margin:14px 0;text-align:center">หันหน้าตรงกล้อง</p><button class="b bg" onclick="admFaceCap()">📸 ถ่าย & ลงทะเบียน</button><button class="b bgh mt8" onclick="closeM()">ยกเลิก</button></div></div>`}
+const op=isOpen();
+return`<div id="nb" class="nb"></div>${modal}<header class="hd"><div class="hb"><span style="font-size:26px">🏸</span><div><div class="ht">YALA BADMINTON</div><div class="hs">${S.adm?"⚙️ ADMIN":"16:30 - 00:00"}</div></div></div><div style="display:flex;align-items:center;gap:8px"><div style="display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;background:rgba(0,0,0,.2)"><div style="width:8px;height:8px;border-radius:50%;background:${op?"#0ead82":"#e63946"}"></div><span style="font-size:10px;color:${op?"#0ead82":"#e63946"};font-weight:700">${timeStr()}</span></div>${S.ci&&me?`<span style="font-size:11px;color:#8899aa"><span class="od"></span> ${me.nn}</span>`:""}<button class="b bgh" onclick="logout()" style="width:auto;padding:5px 10px;font-size:10px">ออก</button></div></header>${c}`}
 function sv2(v){S.view=v;R();rn()}
-function rsc(){return`<div class="scan-w"><div class="scan-c" id="sc"><span style="font-size:72px">🙂</span></div><h2 style="margin-top:28px;font-weight:800;font-size:22px">เช็คอินด้วยใบหน้า</h2><p style="color:#6a7a8a;font-size:13px;margin-top:8px;text-align:center;line-height:1.7">สแกนใบหน้าเพื่อเข้าใช้งานระบบ<br>ต้องอยู่ภายในรัศมีสนาม</p><button class="btn btn-g mt24" id="sb" onclick="doScan()" style="width:auto;padding:14px 52px">🔍 สแกนใบหน้า</button></div>`}
-function doScan(){const c=$("#sc"),b=$("#sb");if(!c||!b)return;c.classList.add("on");c.innerHTML='<div class="scan-l"></div><span style="font-size:72px;position:relative;z-index:1">📷</span>';b.disabled=true;b.textContent="กำลังสแกน...";setTimeout(()=>{S.ci=true;if(!S.myId){const me=S.mems[0];S.myId=me.id;S.ps[me.id]="available";notify("✅ "+me.nickname+" เช็คอินสำเร็จ!","success")}R();rn()},2500)}
-function pc(m,ck,sf){const ip=(S.ps[m.id]||"available")==="playing",sl=S.pp.includes(m.id);return`<div class="pc${ck&&!ip?" ck":""}${sl?" sel":""}${ip?" pl":""}" ${ck&&!ip?`onclick="tp('${m.id}')"`:""}><div class="av ${ip?"av-p":"av-a"}">${m.avatar}</div><div style="flex:1;min-width:0"><div class="pnm">${m.nickname}</div>${sf?`<div class="pfn">${m.firstName} ${m.lastName}</div>`:""}</div><div class="sbdg ${ip?"sb-p":"sb-a"}">${ip?"กำลังเล่น":"ว่าง"}</div></div>`}
-function rd(){const av=S.mems.filter(m=>m.ms==="active"&&(S.ps[m.id]||"available")==="available").length;const pl=Object.values(S.ps).filter(s=>s==="playing").length;const fc=S.courts.filter(c=>!c.m).length;const ac=S.mems.filter(m=>m.ms==="active");return`<div class="stats"><div class="scard" style="background:rgba(14,173,130,.08);border:1px solid rgba(14,173,130,.12)"><div class="snum" style="color:#0ead82">${av}</div><div class="slbl">ว่าง</div></div><div class="scard" style="background:rgba(255,107,53,.08);border:1px solid rgba(255,107,53,.12)"><div class="snum" style="color:#ff6b35">${pl}</div><div class="slbl">กำลังเล่น</div></div><div class="scard" style="background:rgba(123,104,238,.08);border:1px solid rgba(123,104,238,.12)"><div class="snum" style="color:#7b68ee">${fc}</div><div class="slbl">คอร์ดว่าง</div></div></div><div class="slb">ผู้เล่นทั้งหมด (${ac.length})</div>${ac.map(m=>pc(m,false,true)).join("")}`}
-function rp(){if(S.adm)return"";const me=S.mems.find(m=>m.id===S.myId);const av=S.mems.filter(m=>m.ms==="active"&&(S.ps[m.id]||"available")==="available"&&m.id!==S.myId);const pp=S.pp,emp=3-pp.length;return`<h3 style="font-size:18px;font-weight:800;margin-bottom:6px">🎯 สร้าง Party</h3><p style="font-size:13px;color:#6a7a8a;margin-bottom:20px;line-height:1.6">เลือกผู้เล่นที่ว่าง 3 คน รวมตัวคุณเป็น 4 คน</p><div class="pt"><div style="font-size:11px;color:#0ead82;font-weight:700;margin-bottom:10px;letter-spacing:1px">ทีมของคุณ (${1+pp.length}/4)</div><div class="fw" style="margin-bottom:0">${me?`<span class="bdg">${me.avatar} ${me.nickname} (คุณ)</span>`:""}${pp.map(id=>{const p=S.mems.find(x=>x.id===id);return`<span class="bdg bdg-pk" onclick="tp('${id}')">${p?p.avatar:""} ${p?p.nickname:""} ✕</span>`}).join("")}${Array.from({length:emp}).map(()=>'<span class="bdg bdg-em">+ เลือก</span>').join("")}</div></div><div class="slb">ผู้เล่นที่ว่าง (${av.length})</div>${av.length===0?'<div class="emp-s" style="padding:36px;font-size:14px">ไม่มีผู้เล่นที่ว่าง</div>':av.map(m=>pc(m,true)).join("")}<button class="btn ${pp.length===3?"btn-gr":""} mt24" ${pp.length!==3?'disabled style="background:#1e2a3a;color:#4a5a6a;box-shadow:none"':""} onclick="mkParty()">${pp.length===3?"🏸 สร้าง Party & จัดคิว!":"เลือกอีก "+(3-pp.length)+" คน"}</button>`}
-function tp(id){const i=S.pp.indexOf(id);if(i>=0)S.pp.splice(i,1);else if(S.pp.length<3)S.pp.push(id);R();rn()}
-function mkParty(){if(S.pp.length!==3)return;const all=[S.myId,...S.pp],pls=all.map(id=>S.mems.find(m=>m.id===id));all.forEach(id=>{S.ps[id]="playing"});const fc=S.courts.find(c=>!c.m);if(fc){fc.m={players:pls,phase:"warmup",timer:WU,scores:{},times:{}};notify("🏸 Party → "+fc.name+"! Warmup 5 นาที","success")}else{S.q.push({players:pls});notify("📋 Party เข้าคิว ลำดับที่ "+S.q.length,"info")}S.pp=[];S.view="courts";R();rn()}
-function rco(){return S.courts.map(c=>rcc(c)).join("")}
-function rcc(c){if(!c.m)return`<div class="cc emp"><div class="ch"><div class="cn">${c.name}</div><div class="cs" style="background:rgba(14,173,130,.12);color:#0ead82">ว่าง</div></div><div class="emp-s" style="padding:28px"><div class="emp-i">🏸</div>คอร์ดว่าง</div></div>`;
-const m=c.m,bds=m.players.map(p=>`<span class="bdg">${p.avatar} ${p.nickname}</span>`).join("");let pl,pc2,pb;
-switch(m.phase){case"warmup":pl="⏱ WARMUP";pc2="#ffc107";pb="rgba(255,193,7,.12)";break;case"rest":pl="😮‍💨 พัก";pc2="#7b68ee";pb="rgba(123,104,238,.12)";break;case"done":pl="✅ จบ";pc2="#0ead82";pb="rgba(14,173,130,.12)";break;default:pl="🏸 "+m.phase.toUpperCase();pc2="#ff6b35";pb="rgba(255,107,53,.12)"}
-let bd="";
-if(m.phase==="warmup"){const tc=m.timer<60?"tr":m.timer<120?"to":"tg";bd=`<div class="tc"><div class="tlbl">⏱ Warmup</div><div class="tval ${tc}">${fm(m.timer)}</div><p style="font-size:12px;color:#6a7a8a;margin:8px 0 16px;line-height:1.6">ต้องกด "เริ่มเกม" ก่อนหมดเวลา<br>ไม่งั้นหลุดจากคิว!</p><button class="btn btn-g" style="font-size:16px;padding:16px" onclick="sg(${c.id})">▶ เริ่มเกม!</button></div>`}
-else if(m.phase==="set1"){bd=`<div><div class="tlbl">🏸 Set 1</div><div class="tval tg">${fm(m.timer)}</div><div class="scr"><div style="flex:1"><div class="scl">ทีม A</div><input class="sci" id="sa${c.id}" type="number" placeholder="0"></div><div class="scd">:</div><div style="flex:1"><div class="scl">ทีม B</div><input class="sci" id="sb${c.id}" type="number" placeholder="0"></div></div><button class="btn btn-o mt12" onclick="ss(${c.id},1)">📝 บันทึก Set 1 → พัก</button></div>`}
-else if(m.phase==="rest"){const tc=m.timer<60?"tr":m.timer<120?"to":"tg";bd=`<div class="tc"><div class="tlbl">😮‍💨 พัก (สูงสุด 5 นาที)</div><div class="tval ${tc}">${fm(m.timer)}</div><div style="margin:12px 0;padding:10px 18px;border-radius:12px;display:inline-block;background:rgba(255,255,255,.04);font-size:14px;font-weight:600">Set 1: <span style="color:#0ead82">${m.scores.s1}</span> | ${fm(m.times.t1||0)}</div><button class="btn btn-g mt12" style="font-size:16px" onclick="s2s(${c.id})">▶ เริ่ม Set 2</button></div>`}
-else if(m.phase==="set2"){bd=`<div><div class="tlbl">🏸 Set 2</div><div class="tval tg">${fm(m.timer)}</div><div class="tc" style="font-size:13px;color:#5a6a7a;margin-top:4px">Set 1: <span style="color:#0ead82;font-weight:700">${m.scores.s1}</span> (${fm(m.times.t1||0)}) | พัก: ${fm(m.times.ru||0)}</div><div class="scr"><div style="flex:1"><div class="scl">ทีม A</div><input class="sci" id="sa${c.id}" type="number" placeholder="0"></div><div class="scd">:</div><div style="flex:1"><div class="scl">ทีม B</div><input class="sci" id="sb${c.id}" type="number" placeholder="0"></div></div><button class="btn btn-r mt12" onclick="ss(${c.id},2)">🏆 บันทึก Set 2 → จบเกม</button></div>`}
-else if(m.phase==="done"){const tot=(m.times.t1||0)+(m.times.t2||0)+(m.times.ru||0);bd=`<div class="tc"><div style="font-size:48px;margin-bottom:4px">🏆</div><div class="dsg"><div><div style="font-size:10px;color:#5a6a7a;font-weight:600;margin-bottom:4px">SET 1</div><div style="font-weight:900;font-size:26px;color:#0ead82;font-family:'Orbitron',monospace">${m.scores.s1}</div><div style="font-size:12px;color:#6a7a8a;margin-top:4px">⏱ ${fm(m.times.t1||0)}</div></div><div><div style="font-size:10px;color:#5a6a7a;font-weight:600;margin-bottom:4px">SET 2</div><div style="font-weight:900;font-size:26px;color:#ff6b35;font-family:'Orbitron',monospace">${m.scores.s2}</div><div style="font-size:12px;color:#6a7a8a;margin-top:4px">⏱ ${fm(m.times.t2||0)}</div></div></div><div class="dsb"><div style="display:flex;justify-content:space-between;font-size:13px;color:#6a7a8a;margin-bottom:6px"><span>เวลาพัก</span><span style="color:#7b68ee;font-weight:700">${fm(m.times.ru||0)}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800"><span>เวลารวม</span><span style="color:#0ead82;font-family:'Orbitron',monospace;font-size:18px">${fm(tot)}</span></div></div><button class="btn btn-gh" onclick="cc(${c.id})" style="width:auto;padding:12px 36px">เคลียร์คอร์ด</button></div>`}
-return`<div class="cc"><div class="ch"><div class="cn">${c.name}</div><div class="cs" style="background:${pb};color:${pc2}">${pl}</div></div><div class="fw">${bds}</div>${bd}</div>`}
-function sg(cid){const c=S.courts.find(x=>x.id===cid);if(c&&c.m&&c.m.phase==="warmup"){c.m.phase="set1";c.m.timer=0;notify("🏸 เริ่มเกม Set 1!","success");R();rn()}}
-function ss(cid,set){const a=parseInt(($(`#sa${cid}`)||{}).value)||0,b=parseInt(($(`#sb${cid}`)||{}).value)||0;const c=S.courts.find(x=>x.id===cid);if(!c||!c.m)return;
-if(set===1){c.m.times.t1=c.m.timer;c.m.scores.s1=a+"-"+b;c.m.phase="rest";c.m.timer=RM;notify("📝 Set 1: "+a+"-"+b+" | พักไม่เกิน 5 นาที","info")}else{c.m.times.t2=c.m.timer;const ru=c.m.times.ru||0;c.m.scores.s2=a+"-"+b;c.m.times.tot=(c.m.times.t1||0)+(c.m.times.t2||0)+ru;c.m.phase="done";c.m.players.forEach(p=>{S.ps[p.id]="available"});S.hist.unshift({id:Date.now(),date:ds(),court:c.name,players:c.m.players.map(p=>({id:p.id,nn:p.nickname})),scores:{s1:c.m.scores.s1,s2:a+"-"+b},times:{t1:fm(c.m.times.t1||0),t2:fm(c.m.times.t2||0),r:fm(ru),tot:fm(c.m.times.tot)}});sh();notify("🏆 จบเกม "+c.name+"!","success")}R();rn()}
-function s2s(cid){const c=S.courts.find(x=>x.id===cid);if(!c||!c.m)return;c.m.times.ru=RM-c.m.timer;c.m.phase="set2";c.m.timer=0;notify("▶ เริ่ม Set 2!","success");R();rn()}
-function cc(cid){const c=S.courts.find(x=>x.id===cid);if(c)c.m=null;R();rn()}
-function rq(){if(S.q.length===0)return`<h3 style="font-size:18px;font-weight:800;margin-bottom:16px">📋 คิวรอเล่น (0)</h3><div class="emp-s"><div class="emp-i">📋</div>ไม่มีคิวรอ</div>`;return`<h3 style="font-size:18px;font-weight:800;margin-bottom:16px">📋 คิวรอเล่น (${S.q.length})</h3>`+S.q.map((q,i)=>`<div class="qc"><div style="font-weight:800;font-size:15px;color:#7b68ee;margin-bottom:10px">ลำดับที่ ${i+1}</div><div class="fw" style="margin-bottom:0">${q.players.map(p=>`<span class="bdg">${p.avatar} ${p.nickname}</span>`).join("")}</div></div>`).join("")}
-function rh(){if(S.hist.length===0)return`<h3 style="font-size:18px;font-weight:800;margin-bottom:16px">📜 ประวัติ (0)</h3><div class="emp-s"><div class="emp-i">📜</div>ยังไม่มีประวัติ</div>`;return`<h3 style="font-size:18px;font-weight:800;margin-bottom:16px">📜 ประวัติ (${S.hist.length})</h3>`+S.hist.map(h=>`<div class="hc"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><span style="font-weight:700;font-size:14px;color:#0ead82">${h.court}</span><span style="font-size:11px;color:#5a6a7a">${h.date}</span></div><div class="fw" style="margin-bottom:12px">${h.players.map(p=>`<span style="padding:3px 10px;border-radius:16px;font-size:11px;background:rgba(255,255,255,.05);color:#b0b8c0">${p.nn}</span>`).join("")}</div><div class="hg"><div class="hcl"><div class="hcll">SET 1</div><div style="font-weight:800;color:#0ead82">${h.scores.s1}</div><div style="color:#5a6a7a;font-size:10px">${h.times.t1}</div></div><div class="hcl"><div class="hcll">SET 2</div><div style="font-weight:800;color:#ff6b35">${h.scores.s2}</div><div style="color:#5a6a7a;font-size:10px">${h.times.t2}</div></div><div class="hcl"><div class="hcll">พัก</div><div style="font-weight:700;color:#7b68ee">${h.times.r}</div></div><div class="hcl"><div class="hcll">รวม</div><div style="font-weight:800">${h.times.tot}</div></div></div></div>`).join("")}
-function rm(){if(!S.adm)return"";let f="";if(S.sam){const nm=S.nm,nid="YB-"+String(S.mems.length+1).padStart(3,"0");f=`<div class="amf"><div style="font-size:14px;font-weight:700;color:#0ead82;margin-bottom:16px">➕ เพิ่มสมาชิกใหม่</div><div style="margin-bottom:12px"><label class="flbl">ID (อัตโนมัติ)</label><div class="fin" style="background:rgba(255,255,255,.02);color:#5a6a7a">${nid}</div></div><div class="g2" style="margin-bottom:12px"><div><label class="flbl">ชื่อจริง *</label><input class="fin" id="nf" value="${nm.fn}" oninput="S.nm.fn=this.value" placeholder="ชื่อจริง"></div><div><label class="flbl">นามสกุล</label><input class="fin" id="nl" value="${nm.ln}" oninput="S.nm.ln=this.value" placeholder="นามสกุล"></div></div><div style="margin-bottom:12px"><label class="flbl">ชื่อเล่น *</label><input class="fin" id="nn" value="${nm.nn}" oninput="S.nm.nn=this.value" placeholder="ชื่อเล่น"></div><div style="margin-bottom:12px"><label class="flbl" style="margin-bottom:8px">อวาตาร์</label><div class="avg">${AVS.map(a=>`<div class="avo${nm.av===a?" on":""}" onclick="S.nm.av='${a}';R();rn()">${a}</div>`).join("")}</div></div><div style="margin-bottom:12px"><label class="flbl">สถานะ</label><div style="display:flex;gap:8px"><button class="btn" style="flex:1;padding:10px;font-size:13px;${nm.ms==="active"?"background:rgba(14,173,130,.15);color:#0ead82":"background:rgba(255,255,255,.03);color:#5a6a7a"}" onclick="S.nm.ms='active';R();rn()">✅ Active</button><button class="btn" style="flex:1;padding:10px;font-size:13px;${nm.ms==="inactive"?"background:rgba(230,57,70,.15);color:#e63946":"background:rgba(255,255,255,.03);color:#5a6a7a"}" onclick="S.nm.ms='inactive';R();rn()">⏸ Inactive</button></div></div><button class="btn btn-g mt8" onclick="addM()" ${!nm.fn||!nm.nn?"disabled":""}>✅ เพิ่มสมาชิก</button></div>`}
-return`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:8px;flex-wrap:wrap"><h3 style="font-size:18px;font-weight:800">👥 สมาชิก (${S.mems.length})</h3><div style="display:flex;gap:8px"><button class="btn btn-gh" style="width:auto;padding:10px 16px;font-size:12px;border:1px solid rgba(230,57,70,.2);background:rgba(230,57,70,.08);color:#e63946" onclick="resetD()">🗑 รีเซ็ต</button><button class="btn ${S.sam?"btn-r":"btn-g"}" style="width:auto;padding:10px 20px;font-size:13px" onclick="S.sam=!S.sam;R();rn()">${S.sam?"✕ ยกเลิก":"+ เพิ่มสมาชิก"}</button></div></div>${f}${S.mems.map((m,i)=>`<div class="mr${m.ms!=="active"?" off":""}"><div style="font-size:11px;color:#4a5a6a;font-weight:700;width:28px">${i+1}</div><div class="av av-a" style="width:44px;height:44px;font-size:22px">${m.avatar}</div><div style="flex:1"><div style="font-weight:700;font-size:14px">${m.nickname}</div><div style="font-size:11px;color:#6a7a8a">${m.firstName} ${m.lastName}</div></div><div style="text-align:right"><div style="font-size:10px;color:#5a6a7a;font-family:monospace">${m.id}</div><div style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;margin-top:4px;display:inline-block;background:${m.ms==="active"?"rgba(14,173,130,.12)":"rgba(230,57,70,.12)"};color:${m.ms==="active"?"#0ead82":"#e63946"}">${m.ms==="active"?"ACTIVE":"INACTIVE"}</div></div></div>`).join("")}`}
-function addM(){const nm=S.nm;if(!nm.fn||!nm.nn)return;const id="YB-"+String(S.mems.length+1).padStart(3,"0");S.mems.push({id,firstName:nm.fn,lastName:nm.ln,nickname:nm.nn,avatar:nm.av,ms:nm.ms});sv();S.nm={fn:"",ln:"",nn:"",av:"🧑",ms:"active"};S.sam=false;notify("✅ เพิ่มสมาชิก "+nm.nn+" ("+id+")","success");R();rn()}
-function resetD(){if(!confirm("ล้างข้อมูลทั้งหมด?"))return;localStorage.removeItem("ym");localStorage.removeItem("yh");S.mems=DEF_M.map(x=>({...x}));S.hist=[];notify("🗑 ล้างข้อมูลสำเร็จ","warn");R();rn()}
-setInterval(()=>{if(S.auth!=="app")return;let ch=false;S.courts.forEach(c=>{if(!c.m)return;const m=c.m;if(m.phase==="warmup"){m.timer--;if(m.timer<=0){notify("⚠️ "+c.name+": หมดเวลา Warmup! หลุดจากคิว","warn");m.players.forEach(p=>{S.ps[p.id]="available"});c.m=null}ch=true}else if(m.phase==="set1"||m.phase==="set2"){m.timer++;ch=true}else if(m.phase==="rest"){m.timer--;if(m.timer<=0){notify("⚠️ "+c.name+": หมดเวลาพัก!","warn");m.times.ru=RM;m.phase="set2";m.timer=0}ch=true}});const fc=S.courts.find(c=>!c.m);if(fc&&S.q.length>0){const nx=S.q.shift();fc.m={players:nx.players,phase:"warmup",timer:WU,scores:{},times:{}};notify("🏸 "+nx.players.map(p=>p.nickname).join(", ")+" → "+fc.name,"success");ch=true}if(ch){R();rn()}},1000);
+function closeM(){stopCam();S.modal=null;R()}
+function openE(mid){S.modal="edit";S.editId=mid;const m=gm(mid);S.nm={fn:m.fn,ln:m.ln,nn:m.nn,av:m.av,ms:m.ms};R()}
+function saveE(){const m=gm(S.editId);if(!m)return;Object.assign(m,{fn:S.nm.fn,ln:S.nm.ln,nn:S.nm.nn,av:S.nm.av,ms:S.nm.ms});sv();S.modal=null;notify("✅ แก้ไขแล้ว","success");R();rn()}
+function delM(mid){const m=gm(mid);if(!m||!confirm("ลบ "+m.nn+" ?"))return;S.mems=S.mems.filter(x=>x.id!==mid);sv();notify("🗑 ลบแล้ว","warn");R();rn()}
+function openFR(mid){S.modal="facereg";S.editId=mid;R();setTimeout(()=>startCam("#adm-cam"),400)}
+function admFaceCap(){const photo=capPhoto("#adm-cam");stopCam();if(!photo)return;const m=gm(S.editId);if(m){m.face=photo;sv();notify("✅ ลงทะเบียนใบหน้า "+m.nn,"success")}S.modal=null;R();rn()}
+
+/* ═══ DASHBOARD — Larger photos ═══ */
+function rd(){const onl=Object.keys(S.online).length;const pl=Object.values(S.ps).filter(s=>s==="playing").length;const fc=S.courts.filter(c=>!c.party).length;const op=S.parties.filter(p=>p.members.length<4).length;const ac=S.mems.filter(m=>m.ms==="active");
+return`<div class="sr"><div class="sk" style="background:rgba(14,173,130,.08);border:1px solid rgba(14,173,130,.12)"><div class="sn" style="color:#0ead82">${onl}</div><div class="sl2">ออนไลน์</div></div><div class="sk" style="background:rgba(255,107,53,.08);border:1px solid rgba(255,107,53,.12)"><div class="sn" style="color:#ff6b35">${pl}</div><div class="sl2">เล่นอยู่</div></div><div class="sk" style="background:rgba(14,173,130,.04);border:1px solid rgba(14,173,130,.08)"><div class="sn" style="color:#0ead82">${fc}/4</div><div class="sl2">คอร์ดว่าง</div></div><div class="sk" style="background:rgba(123,104,238,.08);border:1px solid rgba(123,104,238,.12)"><div class="sn" style="color:#7b68ee">${op}</div><div class="sl2">Party รับคน</div></div></div>
+${op>0?`<div style="padding:10px 14px;border-radius:12px;background:rgba(14,173,130,.08);border:1px solid rgba(14,173,130,.12);margin-bottom:14px;cursor:pointer" onclick="sv2('parties')"><span style="font-size:12px;font-weight:600;color:#0ead82">🎯 มี ${op} Party รอคน</span></div>`:""}
+<div class="lb2">ผู้เล่น</div>
+${ac.map(m=>{const on=S.online[m.id];const st=S.ps[m.id]||"offline";const stx=st==="playing"?"กำลังเล่น":st==="inparty"?"ใน Party":on?"ออนไลน์":"ออฟไลน์";const stc=st==="playing"?"#ff6b35":st==="inparty"?"#7b68ee":on?"#0ead82":"#4a5a6a";
+const avcls=st==="playing"?"play":on?"on":"off";
+return`<div class="dpc"><div class="dpc-av ${avcls}">${avH(m,64)}</div><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:15px">${m.nn}</div><div style="font-size:12px;color:#7a8a9a">${m.fn} ${m.ln}</div></div><div class="sb" style="background:rgba(${stc==="#0ead82"?"14,173,130":stc==="#ff6b35"?"255,107,53":stc==="#7b68ee"?"123,104,238":"74,90,106"},.15);color:${stc}">${stx}</div></div>`}).join("")}`}
+
+/* ═══ PARTIES ═══ */
+function rpa(){const myP=getMyP();const openP=S.parties.filter(p=>p.members.length<4);const canC=!myP&&S.online[S.myId]&&(S.ps[S.myId]||"available")==="available"&&!S.adm;
+let myPh="";if(myP){const isl=myP.leader===S.myId;myPh=`<div style="margin-bottom:16px"><div class="lb2">Party ของคุณ</div><div class="prc"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-weight:800;font-size:14px">${isl?"👑 หัวหน้า":"🏸 Party"}</span><span style="font-size:12px;color:#6a7a8a">${myP.members.length}/4</span></div><div class="dots">${myP.members.map(m=>{const mm=gm(m.id);return`<div class="dot filled">${mm&&mm.face?`<img src="${mm.face}">`:((mm||{}).av||"?")}</div>`}).join("")}${Array.from({length:4-myP.members.length}).map(()=>'<div class="dot empty">?</div>').join("")}</div><div class="fw">${myP.members.map(m=>`<span class="bd">${(gm(m.id)||{}).av||"?"} ${m.nn}${m.id===myP.leader?" <span class='leader-tag'>หัวหน้า</span>":""}</span>`).join("")}</div>
+${myP.members.length===4&&!myP.court&&!myP.ack&&isl?`<button class="ack-btn" onclick="ackP(${myP.id})">✅ รับทราบ — พาทีมเข้าคอร์ด</button>`:""}
+${myP.members.length===4&&myP.ack&&!myP.court?`<div class="tc" style="padding:10px;color:#7b68ee;font-size:13px;font-weight:600">📋 คิวที่ ${S.q.indexOf(myP)+1}</div>`:""}
+${myP.members.length<4?`<div style="font-size:12px;color:#6a7a8a;margin-top:6px">รอเพิ่มอีก ${4-myP.members.length} คน</div>`:""}
+${isl&&!myP.court?`<button class="b br mt8" style="font-size:11px;padding:8px" onclick="disbP(${myP.id})">ยุบ Party</button>`:!isl&&!myP.court?`<button class="b bgh mt8" style="font-size:11px;padding:8px" onclick="leaveP(${myP.id})">ออกจาก Party</button>`:""}</div></div>`}
+return`<h3 style="font-size:17px;font-weight:800;margin-bottom:14px">🎯 จัดการ Party</h3>${canC?`<button class="b bg mt8" onclick="createP()" style="font-size:14px;padding:12px">🎯 สร้าง Party ใหม่</button>`:""} ${myPh}${openP.length>0?`<div class="lb2 mt16">Party ที่เปิดรับ (${openP.length})</div>${openP.filter(p=>!myP||p.id!==myP.id).map(p=>{const cj=!myP&&S.online[S.myId]&&(S.ps[S.myId]||"available")==="available";return`<div class="prc open"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-weight:700;font-size:13px">Party #${p.id}</span><span style="font-size:11px;color:#6a7a8a">${p.members.length}/4</span></div><div class="fw">${p.members.map(m=>`<span class="bd">${(gm(m.id)||{}).av||"?"} ${m.nn}${m.id===p.leader?" 👑":""}</span>`).join("")}</div>${cj?`<button class="b bp" style="font-size:12px;padding:8px" onclick="joinP(${p.id})">🤝 เข้าร่วม</button>`:""}</div>`}).join("")}`:`${!myP?'<div class="ep"><div class="ei">🎯</div>ยังไม่มี Party</div>':""}`}`}
+
+function createP(){if(getMyP()||!S.online[S.myId])return;const me=gm(S.myId);S.pid++;S.parties.push({id:S.pid,leader:S.myId,members:[{id:me.id,nn:me.nn}],court:null,ack:false});S.ps[S.myId]="inparty";notify("🎯 สร้าง Party #"+S.pid+"!","success");R();rn()}
+function joinP(pid){if(getMyP()||!S.online[S.myId])return;const p=S.parties.find(x=>x.id===pid);if(!p||p.members.length>=4)return;const me=gm(S.myId);p.members.push({id:me.id,nn:me.nn});S.ps[S.myId]="inparty";notify("🤝 เข้า Party #"+pid+" ("+p.members.length+"/4)","success");if(p.members.length===4)notify("🔔 Party #"+pid+" ครบ 4 คน!","success");R();rn()}
+function leaveP(pid){const p=S.parties.find(x=>x.id===pid);if(!p)return;p.members=p.members.filter(m=>m.id!==S.myId);S.ps[S.myId]="available";if(!p.members.length)S.parties=S.parties.filter(x=>x.id!==pid);notify("👋 ออกจาก Party","warn");R();rn()}
+function disbP(pid){const p=S.parties.find(x=>x.id===pid);if(!p)return;p.members.forEach(m=>{S.ps[m.id]="available"});S.parties=S.parties.filter(x=>x.id!==pid);S.q=S.q.filter(x=>x.id!==pid);notify("🗑 ยุบ Party","warn");R();rn()}
+function ackP(pid){const p=S.parties.find(x=>x.id===pid);if(!p)return;p.ack=true;const fc=S.courts.find(c=>!c.party);if(fc)assignC(p,fc);else{S.q.push(p);notify("📋 เข้าคิวที่ "+S.q.length,"info")}R();rn()}
+function assignC(p,c){c.party=p;c.phase="pre_warmup";c.timer=0;c.scores={};c.times={};p.court=c.id;p.members.forEach(m=>{S.ps[m.id]="playing"});S.q=S.q.filter(x=>x.id!==p.id);notify("🏸 Party #"+p.id+" → "+c.name+"!","success")}
+
+/* ═══ COURTS ═══ */
+function rco(){return S.courts.map(c=>{
+if(!c.party)return`<div class="cc em"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-weight:800;font-size:16px">${c.name}</div><div class="sb" style="background:rgba(14,173,130,.12);color:#0ead82">ว่าง</div></div><div class="ep" style="padding:16px"><div class="ei" style="font-size:32px">🏸</div>คอร์ดว่าง</div></div>`;
+const p=c.party,isl=S.myId&&p.leader===S.myId,bds=p.members.map(m=>`<span class="bd">${(gm(m.id)||{}).av||"?"} ${m.nn}${m.id===p.leader?" 👑":""}</span>`).join("");
+let phLbl,phClr;switch(c.phase){case"pre_warmup":phLbl="⏳ รอ Warmup";phClr="#ffc107";break;case"warmup":phLbl="🔥 Warmup";phClr="#ff6b35";break;case"pre_start":phLbl="⏳ รอเริ่ม";phClr="#ffc107";break;case"set1":phLbl="🏸 SET 1";phClr="#ff6b35";break;case"rest":phLbl="😮‍💨 พัก 15 นาที";phClr="#7b68ee";break;case"rest_grace":phLbl="⚠️ ต้องเริ่ม!";phClr="#e63946";break;case"set2":phLbl="🏸 SET 2";phClr="#ff6b35";break;case"done":phLbl="✅ จบ";phClr="#0ead82";break;default:phLbl="";phClr="#999"}
+const tc=c.timer<60?"td":c.timer<120?"tt":"tg";let bd="";
+if(c.phase==="pre_warmup")bd=`<div class="tc">${isl?`<p style="font-size:13px;color:#ffc107;margin:12px 0">ทุกคนพร้อมแล้ว?</p><button class="b bo" onclick="startWU(${c.id})">🔥 เริ่ม Warmup</button>`:`<p style="font-size:12px;color:#6a7a8a;margin:10px 0">รอหัวหน้า...</p>`}</div>`;
+else if(c.phase==="warmup")bd=`<div class="tc"><div class="tl">🔥 Warmup</div><div class="tv ${tc}">${fm(c.timer)}</div></div>`;
+else if(c.phase==="pre_start")bd=`<div class="tc"><div class="tl">กดเริ่มภายใน</div><div class="tv ${tc}">${fm(c.timer)}</div>${isl?`<button class="b bg mt12" onclick="startSet(${c.id},1)">▶ เริ่ม Set 1</button>`:""}</div>`;
+else if(c.phase==="set1"||c.phase==="set2"){const sn=c.phase==="set1"?"1":"2";bd=`<div><div class="tl">🏸 Set ${sn}</div><div class="tv tg">${fm(c.timer)}</div>${c.phase==="set2"?`<div class="tc" style="font-size:11px;color:#5a6a7a;margin-top:4px">Set 1: <b style="color:#0ead82">${c.scores.s1}</b></div>`:""}${isl?`<div style="display:flex;gap:8px;margin-top:12px;align-items:center"><div style="flex:1"><div style="font-size:10px;color:#5a6a7a;font-weight:600;margin-bottom:4px">ทีม A</div><input class="si" id="sa${c.id}" type="number" placeholder="0"></div><div style="font-weight:900;color:#3a4a5a;font-size:20px;padding-top:12px">:</div><div style="flex:1"><div style="font-size:10px;color:#5a6a7a;font-weight:600;margin-bottom:4px">ทีม B</div><input class="si" id="sb${c.id}" type="number" placeholder="0"></div></div><button class="b ${c.phase==="set1"?"bo":"br"} mt12" onclick="endSet(${c.id})">${c.phase==="set1"?"📝 จบ Set 1":"🏆 จบ Set 2"}</button>`:""}</div>`}
+else if(c.phase==="rest")bd=`<div class="tc"><div class="tl">😮‍💨 พัก</div><div class="tv tg">${fm(c.timer)}</div><div style="font-size:12px;margin:6px 0">Set 1: <b style="color:#0ead82">${c.scores.s1}</b></div></div>`;
+else if(c.phase==="rest_grace")bd=`<div class="tc"><div class="tl">⚠️ กดเริ่มภายใน</div><div class="tv td">${fm(c.timer)}</div>${isl?`<button class="b bg mt8" onclick="startSet(${c.id},2)">▶ เริ่ม Set 2</button>`:""}</div>`;
+else if(c.phase==="done"){const tot=(c.times.t1||0)+(c.times.t2||0)+(c.times.ru||0);bd=`<div class="tc"><div style="font-size:40px;margin-bottom:4px">🏆</div><div class="g2" style="margin-bottom:12px;background:rgba(255,255,255,.03);border-radius:14px;padding:14px"><div><div style="font-size:9px;color:#5a6a7a;font-weight:600">SET 1</div><div style="font-weight:900;font-size:22px;color:#0ead82;font-family:'Orbitron',monospace">${c.scores.s1}</div><div style="font-size:10px;color:#6a7a8a">⏱ ${fm(c.times.t1||0)}</div></div><div><div style="font-size:9px;color:#5a6a7a;font-weight:600">SET 2</div><div style="font-weight:900;font-size:22px;color:#ff6b35;font-family:'Orbitron',monospace">${c.scores.s2}</div><div style="font-size:10px;color:#6a7a8a">⏱ ${fm(c.times.t2||0)}</div></div></div><div style="padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:11px;color:#6a7a8a;margin-bottom:4px"><span>พัก</span><span style="color:#7b68ee;font-weight:700">${fm(c.times.ru||0)}</span></div><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:800"><span>รวม</span><span style="color:#0ead82;font-family:'Orbitron',monospace">${fm(tot)}</span></div></div>${isl?`<button class="b bgh" onclick="clearC(${c.id})" style="width:auto;padding:8px 28px;font-size:12px">เคลียร์คอร์ด</button>`:""}</div>`}
+return`<div class="cc"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-weight:800;font-size:16px">${c.name}</div><div class="sb" style="color:${phClr};background:rgba(${phClr==="#0ead82"?"14,173,130":phClr==="#ff6b35"?"255,107,53":phClr==="#7b68ee"?"123,104,238":phClr==="#ffc107"?"255,193,7":phClr==="#e63946"?"230,57,70":"100,100,100"},.12)">${phLbl}</div></div><div class="fw">${bds}</div>${bd}</div>`}).join("")}
+
+function startWU(cid){const c=S.courts.find(x=>x.id===cid);if(c&&c.phase==="pre_warmup"){c.phase="warmup";c.timer=WU_TIME;notify("🔥 "+c.name+" Warmup 5 นาที!","success");R();rn()}}
+function startSet(cid,sn){const c=S.courts.find(x=>x.id===cid);if(!c)return;c.phase=sn===1?"set1":"set2";c.timer=0;notify("🏸 "+c.name+" เริ่ม Set "+sn+"!","success");R();rn()}
+function endSet(cid){const c=S.courts.find(x=>x.id===cid);if(!c)return;const a=parseInt(($(`#sa${cid}`)||{}).value)||0,b=parseInt(($(`#sb${cid}`)||{}).value)||0;
+if(c.phase==="set1"){c.times.t1=c.timer;c.scores.s1=a+"-"+b;c.phase="rest";c.timer=REST_TIME;notify("📝 Set 1: "+a+"-"+b+" | พัก 15 นาที","info")}
+else if(c.phase==="set2"){c.times.t2=c.timer;c.times.ru=c.times.restUsed||0;c.scores.s2=a+"-"+b;c.phase="done";S.hist.unshift({id:Date.now(),date:ds(),court:c.name,players:c.party.members.map(p=>({id:p.id,nn:p.nn})),scores:{s1:c.scores.s1,s2:a+"-"+b},times:{t1:fm(c.times.t1||0),t2:fm(c.times.t2||0),r:fm(c.times.ru||0),tot:fm((c.times.t1||0)+(c.times.t2||0)+(c.times.ru||0))}});sh();notify("🏆 จบเกม "+c.name+"!","success");if(S.q.length>0)notify("📋 คิวถัดไปเตรียมพร้อม!","info")}R();rn()}
+function clearC(cid){const c=S.courts.find(x=>x.id===cid);if(!c||!c.party)return;c.party.members.forEach(m=>{S.ps[m.id]="available"});S.parties=S.parties.filter(x=>x.id!==c.party.id);c.party=null;c.phase=null;c.timer=0;c.scores={};c.times={};const nx=S.q.shift();if(nx)assignC(nx,c);R();rn()}
+
+/* ═══ QUEUE / HISTORY ═══ */
+function rq(){return`<h3 style="font-size:17px;font-weight:800;margin-bottom:14px">📋 คิว (${S.q.length})</h3>`+(S.q.length===0?'<div class="ep"><div class="ei">📋</div>ว่าง</div>':S.q.map((p,i)=>`<div class="qc"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-weight:800;font-size:14px;color:#7b68ee">ลำดับที่ ${i+1}</span></div><div class="fw" style="margin-bottom:0">${p.members.map(m=>`<span class="bd">${(gm(m.id)||{}).av||"?"} ${m.nn}${m.id===p.leader?" 👑":""}</span>`).join("")}</div></div>`).join(""))}
+function rh(){return`<h3 style="font-size:17px;font-weight:800;margin-bottom:14px">📜 ประวัติ (${S.hist.length})</h3>`+(S.hist.length===0?'<div class="ep"><div class="ei">📜</div>ยังไม่มี</div>':S.hist.map(h=>`<div class="hc"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-weight:700;font-size:12px;color:#0ead82">${h.court}</span><span style="font-size:10px;color:#5a6a7a">${h.date}</span></div><div class="fw" style="margin-bottom:8px">${h.players.map(p=>`<span style="padding:2px 8px;border-radius:12px;font-size:10px;background:rgba(255,255,255,.05);color:#b0b8c0">${p.nn}</span>`).join("")}</div><div class="hg"><div class="tc"><div style="color:#5a6a7a;font-size:8px;font-weight:600">SET 1</div><div style="font-weight:800;color:#0ead82;font-size:12px">${h.scores.s1}</div></div><div class="tc"><div style="color:#5a6a7a;font-size:8px;font-weight:600">SET 2</div><div style="font-weight:800;color:#ff6b35;font-size:12px">${h.scores.s2}</div></div><div class="tc"><div style="color:#5a6a7a;font-size:8px;font-weight:600">พัก</div><div style="font-weight:700;color:#7b68ee;font-size:12px">${h.times.r}</div></div><div class="tc"><div style="color:#5a6a7a;font-size:8px;font-weight:600">รวม</div><div style="font-weight:800;font-size:12px">${h.times.tot}</div></div></div></div>`).join(""))}
+
+/* ═══ MEMBERS (Admin) ═══ */
+function rm(){if(!S.adm)return"";let f="";if(S.sam){const nm=S.nm,nid="YB-"+String(S.mems.length+1).padStart(3,"0");f=`<div class="amf"><div style="font-size:13px;font-weight:700;color:#0ead82;margin-bottom:12px">➕ เพิ่มสมาชิก (ID: ${nid})</div><div style="display:flex;flex-direction:column;gap:8px"><div class="g2"><div><label class="fl">ชื่อจริง *</label><input class="fi" value="${nm.fn}" oninput="S.nm.fn=this.value" style="padding:10px 14px"></div><div><label class="fl">นามสกุล</label><input class="fi" value="${nm.ln}" oninput="S.nm.ln=this.value" style="padding:10px 14px"></div></div><div><label class="fl">ชื่อเล่น *</label><input class="fi" value="${nm.nn}" oninput="S.nm.nn=this.value" style="padding:10px 14px"></div><div><label class="fl">อวาตาร์</label><div class="avg">${AVS.map(a=>`<div class="avo${nm.av===a?" on":""}" onclick="S.nm.av='${a}';R()">${a}</div>`).join("")}</div></div><button class="b bg mt8" onclick="addM()" ${!nm.fn||!nm.nn?"disabled":""} style="font-size:13px;padding:10px">✅ เพิ่ม</button></div></div>`}
+return`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px;flex-wrap:wrap"><h3 style="font-size:17px;font-weight:800">👥 สมาชิก (${S.mems.length})</h3><div style="display:flex;gap:6px"><button class="b bgh" style="width:auto;padding:6px 12px;font-size:10px;border-color:rgba(230,57,70,.2);background:rgba(230,57,70,.08);color:#e63946" onclick="if(confirm('ล้างทั้งหมด?')){localStorage.removeItem('ym4');localStorage.removeItem('yh4');S.mems=DEF_M.map(x=>({...x}));S.hist=[];notify('🗑 รีเซ็ต','warn');R()}">🗑</button><button class="b ${S.sam?"br":"bg"}" style="width:auto;padding:6px 14px;font-size:11px" onclick="S.sam=!S.sam;S.nm={fn:'',ln:'',nn:'',av:'🧑',ms:'active'};R()">${S.sam?"✕":"+ เพิ่ม"}</button></div></div>${f}${S.mems.map((m,i)=>`<div class="mr${m.ms!=="active"?" off":""}"><div style="font-size:10px;color:#4a5a6a;font-weight:700;width:20px">${i+1}</div><div class="av ava" style="width:44px;height:44px;font-size:20px;border:${m.face?"2px solid #0ead82":"none"}">${avH(m,44)}</div><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:13px;display:flex;align-items:center;gap:4px">${m.nn} ${m.face?'<span style="font-size:8px;background:rgba(14,173,130,.15);color:#0ead82;padding:1px 6px;border-radius:6px">📷</span>':''}</div><div style="font-size:10px;color:#6a7a8a">${m.fn} ${m.ln}</div><div style="font-size:9px;color:#5a6a7a;font-family:monospace">${m.id}</div></div><div class="admin-btns"><button style="background:rgba(14,173,130,.12);color:#0ead82" onclick="openFR('${m.id}')" title="ลงทะเบียนใบหน้า">📷</button><button style="background:rgba(123,104,238,.12);color:#7b68ee" onclick="openE('${m.id}')" title="แก้ไข">✏️</button><button style="background:rgba(230,57,70,.12);color:#e63946" onclick="delM('${m.id}')" title="ลบ">🗑</button></div></div>`).join("")}`}
+function addM(){const nm=S.nm;if(!nm.fn||!nm.nn)return;const id="YB-"+String(S.mems.length+1).padStart(3,"0");S.mems.push({id,fn:nm.fn,ln:nm.ln,nn:nm.nn,av:nm.av,ms:nm.ms,face:null,poses:null});sv();S.nm={fn:"",ln:"",nn:"",av:"🧑",ms:"active"};S.sam=false;notify("✅ เพิ่ม "+nm.nn+" ("+id+")","success");R();rn()}
+
+/* ═══ TIMER ═══ */
+setInterval(()=>{if(S.auth!=="app")return;let ch=false;
+S.courts.forEach(c=>{if(!c.party||!c.phase)return;
+if(c.phase==="warmup"){c.timer--;if(c.timer<=0){c.phase="pre_start";c.timer=START_GRACE;notify("⏰ "+c.name+" Warmup เสร็จ!","warn")}ch=true}
+else if(c.phase==="pre_start"){c.timer--;if(c.timer<=0){notify("⚠️ "+c.name+" หลุดจากคิว!","error");c.party.members.forEach(m=>{S.ps[m.id]="available"});S.parties=S.parties.filter(x=>x.id!==c.party.id);c.party=null;c.phase=null;const nx=S.q.shift();if(nx)assignC(nx,c)}ch=true}
+else if(c.phase==="set1"||c.phase==="set2"){c.timer++;ch=true}
+else if(c.phase==="rest"){c.timer--;if(c.timer<=0){c.phase="rest_grace";c.timer=REST_GRACE;c.times.restUsed=REST_TIME;notify("⏰ "+c.name+" หมดเวลาพัก!","warn")}ch=true}
+else if(c.phase==="rest_grace"){c.timer--;if(c.timer<=0){notify("⚠️ "+c.name+" หลุด!","error");c.party.members.forEach(m=>{S.ps[m.id]="available"});S.parties=S.parties.filter(x=>x.id!==c.party.id);c.party=null;c.phase=null;const nx=S.q.shift();if(nx)assignC(nx,c)}ch=true}});
+const fc=S.courts.find(c2=>!c2.party);if(fc&&S.q.length>0&&S.q[0].ack){const nx=S.q.shift();assignC(nx,fc);ch=true}
+if(ch){R();rn()}},1000);
 ld();R();
 </script>
 </body>
