@@ -160,7 +160,11 @@ function timeStr(){const d=new Date();return String(d.getHours()).padStart(2,"0"
 function getMyP(){return S.parties.find(p=>p.members.some(m=>m.id===S.myId))}
 function avH(m,sz){if(m.face)return`<img src="${m.face}" alt="${m.nn}">`;return m.av}
 function hav(a1,o1,a2,o2){const R=6371e3,d1=(a2-a1)*Math.PI/180,d2=(o2-o1)*Math.PI/180;const a=Math.sin(d1/2)**2+Math.cos(a1*Math.PI/180)*Math.cos(a2*Math.PI/180)*Math.sin(d2/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
-function ld(){try{const m=localStorage.getItem("ym4"),h=localStorage.getItem("yh4");S.mems=m?JSON.parse(m):DEF_M.map(x=>({...x}));S.hist=h?JSON.parse(h):[];}catch{S.mems=DEF_M.map(x=>({...x}));S.hist=[];}}
+function ld(){try{const m=localStorage.getItem("ym4"),h=localStorage.getItem("yh4");S.mems=m?JSON.parse(m):DEF_M.map(x=>({...x}));S.hist=h?JSON.parse(h):[];
+// Migrate: ensure admin exists + ensure all members have role/un/pw fields
+const adm=S.mems.find(x=>x.id==="YB-000");if(!adm)S.mems.unshift({id:"YB-000",fn:"Admin",ln:"System",nn:"Admin",un:"009",pw:"bxkssnrz",av:"👨‍💼",ms:"active",role:"admin",face:null,poses:null});
+S.mems.forEach(m=>{if(!m.role)m.role=m.id==="YB-000"?"admin":"member";if(m.pw===undefined)m.pw="1234";if(m.un===undefined)m.un=""});
+sv();}catch{S.mems=DEF_M.map(x=>({...x}));S.hist=[];}}
 function sv(){localStorage.setItem("ym4",JSON.stringify(S.mems))}
 function sh(){localStorage.setItem("yh4",JSON.stringify(S.hist))}
 
