@@ -174,8 +174,11 @@ function dn(id){const i=ns.findIndex(n=>n.id===id);if(i>=0){ns.splice(i,1);rn()}
 function rn(){const el=$("#nb");if(!el)return;el.innerHTML=ns.map(n=>`<div class="nf n${n.t==='success'?'s':n.t==='warn'?'w':n.t==='error'?'e':'i'}" onclick="dn(${n.id})">${n.msg}</div>`).join("")}
 
 function stopCam(){if(S.camStream){S.camStream.getTracks().forEach(t=>t.stop());S.camStream=null}}
-async function startCam(sel){try{stopCam();const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:{ideal:480},height:{ideal:480}}});S.camStream=st;setTimeout(()=>{const v=$(sel);if(v){v.srcObject=st;v.play()}},100)}catch(e){notify("❌ เปิดกล้องไม่ได้: "+e.message,"error")}}
-function capPhoto(sel){const v=$(sel);if(!v||!v.videoWidth)return null;const c=document.createElement("canvas");c.width=300;c.height=300;const ctx=c.getContext("2d");const s=Math.min(v.videoWidth,v.videoHeight);const sx=(v.videoWidth-s)/2,sy=(v.videoHeight-s)/2;ctx.drawImage(v,sx,sy,s,s,0,0,300,300);return c.toDataURL("image/jpeg",0.75)}
+async function startCam(sel){try{
+// If stream already active, just re-attach to new element
+if(S.camStream&&S.camStream.active){setTimeout(()=>{const v=$(sel);if(v){v.srcObject=S.camStream;v.play()}},50);return}
+stopCam();const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:{ideal:480},height:{ideal:480}}});S.camStream=st;setTimeout(()=>{const v=$(sel);if(v){v.srcObject=st;v.play()}},100)}catch(e){notify("❌ เปิดกล้องไม่ได้: "+e.message,"error")}}
+function capPhoto(sel){const v=$(sel);if(!v||!v.videoWidth)return null;const c=document.createElement("canvas");c.width=300;c.height=300;const ctx=c.getContext("2d");const s=Math.min(v.videoWidth,v.videoHeight);const sx=(v.videoWidth-s)/2,sy=(v.videoHeight-s)/2;ctx.translate(300,0);ctx.scale(-1,1);ctx.drawImage(v,sx,sy,s,s,0,0,300,300);return c.toDataURL("image/jpeg",0.75)}
 function checkGeo(cb){S.geoOk=null;S.geoDist=null;if(!navigator.geolocation){S.geoOk=false;cb(false);return}navigator.geolocation.getCurrentPosition(p=>{const d=hav(p.coords.latitude,p.coords.longitude,CLAT,CLNG);S.geoDist=Math.round(d);S.geoOk=d<=MRAD;cb(S.geoOk)},()=>{S.geoOk=false;S.geoDist=-1;cb(false)},{enableHighAccuracy:true,timeout:10000})}
 
 function R(){const a=$("#app");if(S.auth==="login"||S.auth==="fo"){a.innerHTML=rl();if(S.auth==="fo")setTimeout(()=>{const w=$(".lw");if(w)w.classList.add("out")},10)}else a.innerHTML=ra();rn()}
@@ -208,7 +211,10 @@ function capRegStep(){const photo=capPhoto("#reg-vid");if(!photo){notify("ถ่
 S.regPhotos.push(photo);
 if(S.regStep===5){// Last step = profile photo
 stopCam();const me=gm(S.myId);me.face=photo;me.poses=S.regPhotos.slice(0,5);sv();
-notify("✅ ลงทะเบียนใบหน้าสำเร็จ!","success");S.scanPhase="idle";S.regStep=0;S.regPhotos=[];R();rn()}else{S.regStep++;R();rn()}}
+notify("✅ ลงทะเบียนใบหน้าสำเร็จ!","success");S.scanPhase="idle";S.regStep=0;S.regPhotos=[];R();rn()
+}else{S.regStep++;R();rn();
+// Re-attach camera to new video element after re-render
+setTimeout(()=>{const v=$("#reg-vid");if(v&&S.camStream){v.srcObject=S.camStream;v.play()}},100)}}
 
 /* ═══ CHECK-IN FLOW ═══ */
 function renderCheckin(){const me=gm(S.myId);const hasFace=!!me.face;
